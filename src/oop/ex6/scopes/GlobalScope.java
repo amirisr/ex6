@@ -28,9 +28,7 @@ public class GlobalScope extends Scope {
     }
 
     @Override
-    public void testScope() throws MethodDefinitionException, MethodDefinedInsideScopeException,
-            IfWhileConditionException, IfWhileDefinedOutsideScopeException, OverScopeClosersException,
-            BadAssignmentException, MethodCallInGlobalScepoException, SyntaxException, MethodCallException {
+    public void testScope() throws CompileException {
         for (int i = getStart(); i <= getEnd(); i++) {
             String line = codeLines[i];
             int methodStart = -1;
@@ -71,7 +69,7 @@ public class GlobalScope extends Scope {
                     addVariablesFromArrayList(tmp);
                     break;
                 case METHOD_CALL:
-                    throw new MethodCallInGlobalScepoException(i);
+                    throw new MethodCallInGlobalScopeException(i);
                 default:
                     throw new SyntaxException(i);
 

@@ -53,7 +53,5 @@ public abstract class Scope {
         }
     }
 
-    public abstract void testScope() throws MethodDefinitionException, MethodDefinedInsideScopeException,
-            IfWhileConditionException, IfWhileDefinedOutsideScopeException, OverScopeClosersException,
-            BadAssignmentException, MethodCallInGlobalScepoException, SyntaxException, MethodCallException;
+    public abstract void testScope() throws CompileException;
 }

@@ -1,14 +1,20 @@
 package oop.ex6.main;
 
-import oop.ex6.scopes.GlobalScope;
-import oop.ex6.variables.VarTypes;
-
+import oop.ex6.scopes.*;
 import java.io.*;
-import java.util.ArrayList;
+import java.util.*;
 
-
+/**
+ * The main class of this exercise - Contains the main method.
+ * @author Amir Israeli
+ * @author Omer Binyamin.
+ */
 public class Sjavac {
 
+    /**
+     * The main method.
+     * @param args arguments for this program.
+     */
     public static void main(String[] args) {
         String file = args[0];
         String[] lines = null;
@@ -34,11 +40,11 @@ public class Sjavac {
         }
         if (success) {
             GlobalScope global = new GlobalScope(lines);
-            if (global.testScope()) {
-                System.out.println(0);
-            } else {
-                System.out.println(1);
+            try  {
+                global.testScope();
+            } catch (CompileException cmp) {
             }
+
         }
     }
 }

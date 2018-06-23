@@ -1,23 +1,20 @@
 package oop.ex6.scopes;
 
-import oop.ex6.codelines.LineInterpreter;
-import oop.ex6.variables.Variable;
+import oop.ex6.codelines.*;
+import oop.ex6.variables.*;
 
-import javax.sound.sampled.Line;
-import java.util.ArrayList;
+import java.util.*;
 
 public class IfWhileScope extends Scope {
 
-    public IfWhileScope(Scope father, int startLine, int endLine) throws IfWhileConditionException
+    public IfWhileScope(Scope father, int startLine, int endLine) throws BadIfWhileConditionException
     {
         super(father, startLine, endLine);
         LineInterpreter.verifyIfWhileCondition(getGlobalScope().getCodeLines()[getStart()], getStart());
     }
 
     @Override
-    public void testScope() throws MethodDefinitionException, MethodDefinedInsideScopeException,
-            IfWhileConditionException, IfWhileDefinedOutsideScopeException, OverScopeClosersException,
-            BadAssignmentException, MethodCallInGlobalScepoException, SyntaxException, MethodCallException {
+    public void testScope() throws CompileException {
         String[] codeLines = getGlobalScope().getCodeLines();
         for (int i = getStart() + 1; i <= getEnd(); i++)
         {

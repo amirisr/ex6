@@ -7,6 +7,10 @@ public enum VarTypes {
     BOOLEAN,
     CHAR;
 
+    /**
+     * Returns the reserved java word for each type.
+     * @return
+     */
     @Override
     public String toString() {
         switch (this)

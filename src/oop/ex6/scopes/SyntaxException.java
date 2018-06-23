@@ -1,7 +1,17 @@
 package oop.ex6.scopes;
 
-public class SyntaxException extends Exception {
+/**
+ * An exception describing a default syntax error.
+ * Extends compile exception class.
+ * @author Amir Israeli
+ * @author Omer Binyamin.
+ */
+public class SyntaxException extends CompileException {
 
+    /**
+     * A constructor for the bad syntax exception.
+     * @param line The line number of the exception.
+     */
     public SyntaxException(int line)
     {
         super("Syntax error in line " + line);

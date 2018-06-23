@@ -1,17 +1,16 @@
 
 package oop.ex6.scopes;
 
-import oop.ex6.codelines.LineInterpreter;
-import oop.ex6.variables.Variable;
+import oop.ex6.codelines.*;
+import oop.ex6.variables.*;
 
-import javax.sound.sampled.Line;
-import java.util.ArrayList;
+import java.util.*;
 
 public class MethodScope extends Scope {
 
     private ArrayList<Variable> params;
 
-    public MethodScope(GlobalScope global, int startLine, int endLine) throws MethodDefinitionException
+    public MethodScope(GlobalScope global, int startLine, int endLine) throws BadMethodDefinitionException
     {
         super(global, startLine, endLine);
         params = LineInterpreter.getParameters(getGlobalScope().getCodeLines()[getStart()], getStart());
@@ -19,9 +18,7 @@ public class MethodScope extends Scope {
 
 
     @Override
-    public void testScope() throws MethodDefinitionException, MethodDefinedInsideScopeException,
-            IfWhileConditionException, IfWhileDefinedOutsideScopeException, OverScopeClosersException,
-            BadAssignmentException, MethodCallInGlobalScepoException, SyntaxException, MethodCallException {
+    public void testScope() throws CompileException {
         String[] codeLines = getGlobalScope().getCodeLines();
         for (int i = getStart() + 1; i <= getEnd(); i++)
         {
