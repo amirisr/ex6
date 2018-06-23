@@ -27,8 +27,6 @@ public class GlobalScope extends Scope
     @Override
     public boolean testScope() {
         //TODO
-
-        boolean result = true;
         for (int i = getStart(); i <= getEnd(); i++)
         {
             String line = codeLines[i];
@@ -83,9 +81,12 @@ public class GlobalScope extends Scope
 
         for (Scope scope : methods)
         {
-            result = result && scope.testScope();
+            if (!scope.testScope())
+            {
+                return false;
+            }
         }
 
-        return result;
+        return true;
     }
 }
