@@ -46,5 +46,10 @@ public abstract class Scope {
         vars.add(var);
     }
 
+    public void addVariable(ArrayList<Variable> variables)
+    {
+        vars.addAll(variables);
+    }
+
     public abstract boolean testScope();
 }

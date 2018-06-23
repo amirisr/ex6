@@ -1,6 +1,7 @@
 package oop.ex6.scopes;
 
-import sun.reflect.generics.scope.MethodScope;
+import oop.ex6.codelines.LineInterpreter;
+import oop.ex6.variables.Variable;
 
 import java.util.ArrayList;
 
@@ -25,7 +26,66 @@ public class GlobalScope extends Scope
 
     @Override
     public boolean testScope() {
-        return false;
         //TODO
+
+        boolean result = true;
+        for (int i = getStart(); i <= getEnd(); i++)
+        {
+            String line = codeLines[i];
+            int methodStart = -1;
+            int count = 0;
+            switch (LineInterpreter.getLineType(line))
+            {
+                case EMPTY_LINE:
+                case COMMENT:
+                    break;
+                case OPEN_IF:
+                case OPEN_WHILE:
+                    count++;
+                    break;
+                case OPEN_METHOD:
+                    if (count > 0)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        methodStart = i;
+                        count++;
+                    }
+                    break;
+                case CLOSE_SCOPE:
+                    count--;
+                    if (count == 0)
+                    {
+                        addMethod(LineInterpreter.createMethod(this, methodStart, i));
+                    }
+                    if (count < 0)
+                    {
+                        return false;
+                    }
+                    break;
+                case VAR_ASSIGNMENT:
+                    if (!LineInterpreter.isAssignmentLegal(this, line, i))
+                    {
+                        return false;
+                    }
+                    break;
+                case VAR_DEFINITION:
+                    ArrayList<Variable> tmp = LineInterpreter.getVariables(line, i);
+                    addVariable(tmp);
+                    break;
+                default: //including method call
+                    return false;
+
+            }
+        }
+
+        for (Scope scope : methods)
+        {
+            result = result && scope.testScope();
+        }
+
+        return result;
     }
 }
