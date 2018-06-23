@@ -72,7 +72,6 @@ public class GlobalScope extends Scope {
                     throw new MethodCallInGlobalScopeException(i);
                 default:
                     throw new SyntaxException(i);
-
             }
         }
 
