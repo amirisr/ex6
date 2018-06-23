@@ -55,17 +55,17 @@ public class GlobalScope extends Scope {
                 case CLOSE_SCOPE:
                     count--;
                     if (count == 0) {
-                        addMethod(LineInterpreter.createMethod(this, methodStart, i));
+                        addMethod(new MethodScope(this, methodStart, i));
                     }
                     if (count < 0) {
                         throw new OverScopeClosersException(i);
                     }
                     break;
                 case VAR_ASSIGNMENT:
-                    LineInterpreter.verifyAssignment(this, line, i);
+                    LineInterpreter.verifyAssignment(this, i);
                     break;
                 case VAR_DEFINITION:
-                    ArrayList<Variable> tmp = LineInterpreter.getVariables(line, i);
+                    ArrayList<Variable> tmp = LineInterpreter.getVariables(this, i);
                     addVariablesFromArrayList(tmp);
                     break;
                 case METHOD_CALL:

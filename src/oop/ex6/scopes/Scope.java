@@ -48,6 +48,7 @@ public abstract class Scope {
 
     public void addVariablesFromArrayList(ArrayList<Variable> variables)
     {
+        for (Variable variable : variables)
         if (variables != null) { //ERASE LATER
             vars.addAll(variables);
         }

@@ -27,31 +27,57 @@ public class LineInterpreter {
         //TODO
     }
 
-
-    public static ArrayList<Variable> getVariables(String line, int lineNum) throws BadVariableDefinition
+    /**
+     * Create all variables in a given line.
+     * @param scope the scope in which the line is on.
+     * @param lineNum The line number to create variables from.
+     * @return An ArrayList of Variables.
+     * @throws BadVariableDefinition If the line was not in correct format.
+     */
+    public static ArrayList<Variable> getVariables(Scope scope, int lineNum)
+            throws BadVariableDefinition
     {
+        String line = scope.getGlobalScope().getCodeLines()[lineNum];
+
         return null;
         //TODO
     }
 
-    public static void verifyAssignment(Scope scope, String line, int lineNum) throws BadAssignmentException
+    /**
+     * Verifies an assignment line.
+     * @param scope the scope in which the line is on.
+     * @param lineNum The line number to check.
+     * @throws BadAssignmentException If the assignment line was bad.
+     */
+    public static void verifyAssignment(Scope scope, int lineNum) throws BadAssignmentException
     {
+        String line = scope.getGlobalScope().getCodeLines()[lineNum];
+
         return;
         //TODO
     }
 
-    public static MethodScope createMethod(GlobalScope global, int startLine, int endLine)
-            throws BadMethodDefinitionException
+    /**
+     * Verifies a method call line.
+     * @param scope the scope in which the line is on.
+     * @param lineNum The line number to check.
+     * @throws BadAssignmentException If the method call line was bad.
+     */
+    public static void verifyMethodCall(Scope scope, int lineNum) throws MethodCallException
     {
-        return new MethodScope(global, startLine, endLine);
-    }
+        String line = scope.getGlobalScope().getCodeLines()[lineNum];
 
-    public static void verifyMethodCall(Scope scope, String line, int lineNum) throws MethodCallException
-    {
         return;
         //TODO
     }
 
+    /**
+     * Create all parameters for a given method.
+     * @param definition The definition line.
+     * @param lineNum The line number to create variables from.
+     * @return An ArrayList of Variables.
+     * @throws BadMethodDefinitionException If the line was not in correct format.
+     */
     public static ArrayList<Variable> getParameters(String definition, int lineNum)
             throws BadMethodDefinitionException
     {
@@ -59,7 +85,14 @@ public class LineInterpreter {
         //TODO
     }
 
-    public static void verifyIfWhileCondition(String line, int lineNum) throws BadIfWhileConditionException
+    /**
+     * Create all parameters for a given method.
+     * @param condition The condition line.
+     * @param lineNum The line number to create variables from.
+     * @throws BadIfWhileConditionException If the condition was not in correct format.
+     */
+    public static void verifyIfWhileCondition(String condition, int lineNum) throws
+            BadIfWhileConditionException
     {
         return;
         //TODO

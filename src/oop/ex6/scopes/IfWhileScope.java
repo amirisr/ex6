@@ -35,7 +35,7 @@ public class IfWhileScope extends Scope {
                     }
                     break;
                 case METHOD_CALL:
-                    LineInterpreter.verifyMethodCall(this, line, i);
+                    LineInterpreter.verifyMethodCall(this, i);
                     break;
                 case CLOSE_SCOPE:
                     count--;
@@ -50,10 +50,10 @@ public class IfWhileScope extends Scope {
                     }
                     break;
                 case VAR_ASSIGNMENT:
-                    LineInterpreter.verifyAssignment(this, line, i);
+                    LineInterpreter.verifyAssignment(this, i);
                     break;
                 case VAR_DEFINITION:
-                    ArrayList<Variable> tmp = LineInterpreter.getVariables(line, i);
+                    ArrayList<Variable> tmp = LineInterpreter.getVariables(this, i);
                     addVariablesFromArrayList(tmp);
                     break;
                 case OPEN_METHOD:
