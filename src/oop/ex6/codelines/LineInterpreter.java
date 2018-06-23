@@ -9,7 +9,7 @@ public class LineInterpreter {
 
     public static CodeLineTypes getLineType(String line)
     {
-        if(line.matches("\\s*(?:int|double|char|boolean|String)\\s*")){
+        if(line.matches("\\s*(?:int|double|char|boolean|String)\\s*+.*}")){
             return CodeLineTypes.VAR_DEFINITION;
         }
         return null;
