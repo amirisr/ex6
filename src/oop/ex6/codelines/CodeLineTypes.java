@@ -5,9 +5,9 @@ public enum CodeLineTypes {
     COMMENT,
     OPEN_METHOD,
     METHOD_CALL,
-    OPEN_IF,
-    OPEN_WHILE,
+    OPEN_IF_WHILE,
     CLOSE_SCOPE,
     VAR_ASSIGNMENT,
-    VAR_DEFINITION
+    VAR_DEFINITION,
+    ERROR
 }

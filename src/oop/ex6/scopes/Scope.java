@@ -42,14 +42,18 @@ public abstract class Scope {
         return vars;
     }
 
-    public void addVariable(Variable var) {
+    public void addVariablesFromArrayList(Variable var) {
         vars.add(var);
     }
 
-    public void addVariable(ArrayList<Variable> variables)
+    public void addVariablesFromArrayList(ArrayList<Variable> variables)
     {
-        vars.addAll(variables);
+        if (variables != null) { //ERASE LATER
+            vars.addAll(variables);
+        }
     }
 
-    public abstract boolean testScope();
+    public abstract void testScope() throws MethodDefinitionException, MethodDefinedInsideScopeException,
+            IfWhileConditionException, IfWhileDefinedOutsideScopeException, OverScopeClosersException,
+            BadAssignmentException, MethodCallInGlobalScepoException, SyntaxException, MethodCallException;
 }

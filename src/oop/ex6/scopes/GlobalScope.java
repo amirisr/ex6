@@ -5,12 +5,11 @@ import oop.ex6.variables.Variable;
 
 import java.util.ArrayList;
 
-public class GlobalScope extends Scope
-{
+public class GlobalScope extends Scope {
     private ArrayList<MethodScope> methods;
     private String[] codeLines;
 
-    public GlobalScope(String[] lines){
+    public GlobalScope(String[] lines) {
         super(null, 0, lines.length - 1);
         methods = new ArrayList<MethodScope>();
         codeLines = lines;
@@ -24,69 +23,63 @@ public class GlobalScope extends Scope
         methods.add(method);
     }
 
+    public String[] getCodeLines() {
+        return codeLines;
+    }
+
     @Override
-    public boolean testScope() {
-        //TODO
-        for (int i = getStart(); i <= getEnd(); i++)
-        {
+    public void testScope() throws MethodDefinitionException, MethodDefinedInsideScopeException,
+            IfWhileConditionException, IfWhileDefinedOutsideScopeException, OverScopeClosersException,
+            BadAssignmentException, MethodCallInGlobalScepoException, SyntaxException, MethodCallException {
+        for (int i = getStart(); i <= getEnd(); i++) {
             String line = codeLines[i];
             int methodStart = -1;
             int count = 0;
-            switch (LineInterpreter.getLineType(line))
-            {
+            switch (LineInterpreter.getLineType(line)) {
                 case EMPTY_LINE:
                 case COMMENT:
                     break;
-                case OPEN_IF:
-                case OPEN_WHILE:
-                    count++;
+                case OPEN_IF_WHILE:
+                    if (count > 0) {
+                        count++;
+                    } else {
+                        throw new IfWhileDefinedOutsideScopeException(i);
+                    }
                     break;
                 case OPEN_METHOD:
-                    if (count > 0)
-                    {
-                        return false;
-                    }
-                    else
-                    {
+                    if (count > 0) {
+                        throw new MethodDefinedInsideScopeException(i);
+                    } else {
                         methodStart = i;
                         count++;
                     }
                     break;
                 case CLOSE_SCOPE:
                     count--;
-                    if (count == 0)
-                    {
+                    if (count == 0) {
                         addMethod(LineInterpreter.createMethod(this, methodStart, i));
                     }
-                    if (count < 0)
-                    {
-                        return false;
+                    if (count < 0) {
+                        throw new OverScopeClosersException(i);
                     }
                     break;
                 case VAR_ASSIGNMENT:
-                    if (!LineInterpreter.isAssignmentLegal(this, line, i))
-                    {
-                        return false;
-                    }
+                    LineInterpreter.verifyAssignment(this, line, i);
                     break;
                 case VAR_DEFINITION:
                     ArrayList<Variable> tmp = LineInterpreter.getVariables(line, i);
-                    addVariable(tmp);
+                    addVariablesFromArrayList(tmp);
                     break;
-                default: //including method call
-                    return false;
+                case METHOD_CALL:
+                    throw new MethodCallInGlobalScepoException(i);
+                default:
+                    throw new SyntaxException(i);
 
             }
         }
 
-        for (Scope scope : methods)
-        {
-            if (!scope.testScope())
-            {
-                return false;
-            }
+        for (Scope scope : methods) {
+            scope.testScope();
         }
-
-        return true;
     }
 }
