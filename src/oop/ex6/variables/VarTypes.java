@@ -5,5 +5,23 @@ public enum VarTypes {
     DOUBLE,
     STRING,
     BOOLEAN,
-    CHAR
+    CHAR;
+
+    @Override
+    public String toString() {
+        switch (this)
+        {
+            case INT:
+                return "int";
+            case DOUBLE:
+                return "double";
+            case STRING:
+                return "String";
+            case BOOLEAN:
+                return "boolean";
+            case CHAR:
+                return "char";
+        }
+        return "";
+    }
 }

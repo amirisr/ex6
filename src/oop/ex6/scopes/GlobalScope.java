@@ -9,8 +9,8 @@ public class GlobalScope extends Scope
     private ArrayList<MethodScope> methods;
     private String[] codeLines;
 
-    public GlobalScope(int start, int end, String[] lines){
-        super(null, start, end);
+    public GlobalScope(String[] lines){
+        super(null, 0, lines.length - 1);
         methods = new ArrayList<MethodScope>();
         codeLines = lines;
     }
