@@ -1,1 +1,2 @@
 final double a = 1,g , f = 4;
+String d__ = "gf^", fd,;

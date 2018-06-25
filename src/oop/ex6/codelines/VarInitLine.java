@@ -124,6 +124,9 @@ public class VarInitLine {
 			values.add(matcher.group(2));
 			prevEnd = matcher.end();
 		}
+		if(prevEnd != line.length()){
+			throw new BadVariableDefinition(num);
+		}
 
 	}
 
