@@ -9,15 +9,20 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * This class describes an analyser for variable declaration lines.
+ * @author Amir Israeli
+ * @author Omer Binyamin
+ */
 public class VarInitLine {
-	private String line;
-	private int num;
-	private boolean isFinal = false;
-	private String type;
-	private ArrayList<String> names;
-	private ArrayList<String> values;
-	private static final String isLineRegex = "\\s*(?:final\\s)?\\s*(?:int|double|char|boolean|String)\\s+.*;\\s*";
-	static final String validVarNameRegex = "_\\w+|[a-zA-Z]\\w*";
+    private String line;
+    private int num;
+    private boolean isFinal = false;
+    private String type;
+    private ArrayList<String> names;
+    private ArrayList<String> values;
+    private static final String isLineRegex = "\\s*(?:final\\s)?\\s*(?:int|double|char|boolean|String)\\s+.*;\\s*";
+    public static final String validVarNameRegex = "_\\w+|[a-zA-Z]\\w*";
 
 	private static final String stringRegex = "\\s*("+validVarNameRegex+")\\s*(?:=\\s*(\".*\")\\s*)?,";
 	private static final String intRegex = "\\s*("+validVarNameRegex+")\\s*(?:=\\s*(\\d+)\\s*)?,";
@@ -27,25 +32,40 @@ public class VarInitLine {
 
 	static final String FINAL = "final";
 
-	private static final String INT = "int";
-	private static final String DOUBLE = "double";
-	private static final String STRING = "String";
-	private static final String CHAR = "char";
-	private static final String BOOLEAN = "boolean";
+    private static final String INT = "int";
+    private static final String DOUBLE = "double";
+    private static final String STRING = "String";
+    private static final String CHAR = "char";
+    private static final String BOOLEAN = "boolean";
 
-	public VarInitLine(String line, int lineNum) throws CompileException {
-		this.line = line;
-		num = lineNum;
-		names = new ArrayList<String>();
-		values = new ArrayList<String>();
-		processLine();
-	}
+    /**
+     * Constructor for a variable declaration line analyser.
+     * @param line The line to analyze.
+     * @param lineNum The line number in its code.
+     * @throws BadVariableDefinition In case the line is not legit line.
+     */
+    public VarInitLine(String line, int lineNum) throws BadVariableDefinition {
+        this.line = line;
+        num = lineNum;
+        names = new ArrayList<String>();
+        values = new ArrayList<String>();
+        processLine();
+    }
 
 
 		static boolean isLine(String line) {
 		Matcher matcher = LineInterpreter.getMatcher(isLineRegex, line);
 		return matcher.matches();
 	}
+    /**
+     * Determines if a given line describes a variable declaration or not.
+     * @param line The line to analyze.
+     * @return true iff the line describes a variable declaration line.
+     */
+    public static boolean isLine(String line) {
+        Matcher matcher = getMatcher(isLineRegex, line);
+        return matcher.matches();
+    }
 
 	private void processLine() throws BadVariableDefinition{
 		line = line.trim(); // remove excess spaces
