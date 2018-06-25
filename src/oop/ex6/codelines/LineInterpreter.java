@@ -44,6 +44,9 @@ public class LineInterpreter {
 		else if(IfWhileLine.isLine(line)){
             return CodeLineTypes.OPEN_IF_WHILE;
         }
+        else if(VarAssignLine.isLine(line)){
+            return CodeLineTypes.VAR_ASSIGNMENT;
+        }
         return CodeLineTypes.ERROR;
         //TODO
     }
@@ -72,7 +75,7 @@ public class LineInterpreter {
     public static void verifyAssignment(Scope scope, int lineNum) throws BadAssignmentException
     {
         String line = scope.getGlobalScope().getCodeLines()[lineNum];
-
+        // need to get assignment details from VarAssignLine
         return;
         //TODO
     }
@@ -81,7 +84,7 @@ public class LineInterpreter {
      * Verifies a method call line.
      * @param scope the scope in which the line is on.
      * @param lineNum The line number to check.
-     * @throws BadAssignmentException If the method call line was bad.
+     * @throws MethodCallException If the method call line was bad.
      */
     public static void verifyMethodCall(Scope scope, int lineNum) throws MethodCallException
     {
@@ -116,7 +119,6 @@ public class LineInterpreter {
             BadIfWhileConditionException
     {
         IfWhileLine processor = new IfWhileLine(condition, lineNum);
-        processor.processLine();
         ArrayList<String> varNames =  processor.getVarsInCondition();
         //TODO
     }

@@ -1,6 +1,8 @@
 package oop.ex6.codelines;
 
 import java.util.ArrayList;
+
+import oop.ex6.scopes.BadIfWhileConditionException;
 import oop.ex6.scopes.CompileException;
 
 import javax.naming.CommunicationException;
@@ -19,7 +21,7 @@ public class IfWhileLine{
 	private final static String WHILE = "while";
 	private ArrayList<String> varsInCondition;
 
-	 IfWhileLine(String line, int lineNum) {
+	 IfWhileLine(String line, int lineNum) throws BadIfWhileConditionException{
 	 	num = lineNum;
 	 	this.line = line;
 	 	varsInCondition = new ArrayList<>();
@@ -32,7 +34,7 @@ public class IfWhileLine{
 		return matcher.matches();
 	}
 
-	private void processLine() {
+	private void processLine() throws BadIfWhileConditionException{
 		line = line.trim();
 		removeIfWhile();
 		validateCondition();
@@ -51,14 +53,14 @@ public class IfWhileLine{
 		line = line.trim();
 	}
 
-	private void validateCondition() {
+	private void validateCondition() throws BadIfWhileConditionException{
 		line = line.substring(0, line.length() - 1).trim(); // remove the '{' char
 		if (!line.startsWith("(") || !line.endsWith(")")) {
-			// raise exception, condition is not bounded with parentheses
+			throw new BadIfWhileConditionException(num);
 		}
 		line = line.substring(1, line.length() - 1) + "||";
 		if (!LineInterpreter.getMatcher(isConditionLegalRegex, line).matches()) {
-			// raise exception
+			throw new BadIfWhileConditionException(num);
 		}
 		// we know the condition is legal, i.e. has no strings chars spaces etc
 	}

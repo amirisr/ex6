@@ -6,13 +6,13 @@ import oop.ex6.scopes.BadVariableDefinition;
 import java.util.regex.Matcher;
 
 public class VarAssignLine {
-	private final String isLineRegex = "\\s*\\w*\\s*=.*;\\s*";
-	private final String findNameRegex = "("+VarInitLine.validVarNameRegex+")\\s*=.*";
-	private final String stringRegex = "\".*\"";
-	private final String intRegex = "[+-]?\\d+";
-	private final String doubleRegex = "[+-]?\\d+(?:\\.\\d+)";
-	private final String charRegex = "'.?'";
-	private final String booleanRegex = "true|false";
+	private static final String isLineRegex = "\\s*\\w*\\s*=.*;\\s*";
+	private static final String findNameRegex = "("+VarInitLine.validVarNameRegex+")\\s*=.*";
+	private static final String stringRegex = "\".*\"";
+	private static final String intRegex = "[+-]?\\d+";
+	private static final String doubleRegex = "[+-]?\\d+(?:\\.\\d+)";
+	private static final String charRegex = "'.?'";
+	private static final String booleanRegex = "true|false";
 	private String line;
 	private final int num;
 	private String assignedVar;
@@ -25,7 +25,7 @@ public class VarAssignLine {
 		processLine();
 	}
 
-	boolean isLine(String line){
+	static boolean isLine(String line){
 		return LineInterpreter.getMatcher(line, isLineRegex).matches();
 	}
 
@@ -49,7 +49,7 @@ public class VarAssignLine {
 
 	private void checkAssignment() throws BadAssignmentException{
 		if(LineInterpreter.getMatcher(stringRegex,line).matches()){
-			type = VarInitLine.STRING;
+			assignedType = VarInitLine.STRING;
 		}
 		else if(LineInterpreter.getMatcher(charRegex,line).matches()){
 			assignedType = VarInitLine.CHAR;
