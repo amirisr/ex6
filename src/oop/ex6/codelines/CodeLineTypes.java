@@ -9,5 +9,6 @@ public enum CodeLineTypes {
     CLOSE_SCOPE,
     VAR_ASSIGNMENT,
     VAR_DEFINITION,
+    RETURN,
     ERROR
 }

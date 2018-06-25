@@ -26,11 +26,21 @@ public class MethodScope extends Scope {
 
     @Override
     public void testScope() throws CompileException {
+        ArrayList<Variable> history = getGlobalHistory();
         String[] codeLines = getGlobalScope().getCodeLines();
         int scopeStart = -1;
         int count = 0;
-        for (int i = getStart() + 1; i < getEnd(); i++) {
+        boolean wasReturnFound = false;
+        for (int i = getStart() + 1; i < getEnd() - 1; i++) {
             String line = codeLines[i];
+            if (wasReturnFound)
+            {
+                if (!(LineInterpreter.getLineType(line) == CodeLineTypes.EMPTY_LINE || LineInterpreter
+                        .getLineType(line) == CodeLineTypes.COMMENT))
+                {
+                    throw new SyntaxException(i);
+                }
+            }
             switch (LineInterpreter.getLineType(line)) {
                 case EMPTY_LINE:
                 case COMMENT:
@@ -71,14 +81,22 @@ public class MethodScope extends Scope {
                     break;
                 case OPEN_METHOD:
                     throw new MethodDefinedInsideScopeException(i);
+                case RETURN:
+                    wasReturnFound = true;
+                    break;
                 default:
                     throw new SyntaxException(i);
 
             }
         }
+        if (LineInterpreter.getLineType(codeLines[getEnd() - 1]) != CodeLineTypes.RETURN)
+        {
+            throw new SyntaxException(getEnd() - 1);
+        }
         if (count != 0 || LineInterpreter.getLineType(codeLines[getEnd()]) != CodeLineTypes.CLOSE_SCOPE) {
             throw new NumberOfScopeClosersException(getEnd());
         }
+        getGlobalScope().setHistory(history);
     }
 
     /**
@@ -128,5 +146,16 @@ public class MethodScope extends Scope {
      */
     public String getName() {
         return name;
+    }
+
+    /* gets the variable's history of the global scope */
+    private ArrayList<Variable> getGlobalHistory()
+    {
+        ArrayList<Variable> result = new ArrayList<>();
+        for (Variable var : getGlobalScope().getVariables())
+        {
+            result.add(var.cloneVariable());
+        }
+        return result;
     }
 }

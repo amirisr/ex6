@@ -90,4 +90,13 @@ public abstract class Scope {
         }
         return null;
     }
+
+    /**
+     * Sets the scope's variable back to a given history.
+     * @param variables ArrayList of old variables.
+     */
+    public void setHistory(ArrayList<Variable> variables)
+    {
+        vars = variables;
+    }
 }

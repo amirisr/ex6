@@ -57,7 +57,6 @@ public class Variable {
 
 	/**
 	 * Returns the variable's name.
-	 *
 	 * @return The variable's name.
 	 */
 	public String getName() {
@@ -69,8 +68,16 @@ public class Variable {
 		return type + " " + name + " final: " + isFinal + " assigned: " + isInitialized;
 	}
 
+    /**
+     * Sets the variable as initialized.
+     */
 	public void setAsInitialized()
     {
         isInitialized = true;
+    }
+
+    public Variable cloneVariable()
+    {
+        return new Variable(type, name, isInitialized, isFinal);
     }
 }

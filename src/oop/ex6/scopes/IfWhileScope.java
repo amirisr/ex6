@@ -25,6 +25,7 @@ public class IfWhileScope extends Scope {
             {
                 case EMPTY_LINE:
                 case COMMENT:
+                case RETURN:
                     break;
                 case OPEN_IF_WHILE:
                     if (count > 0) {

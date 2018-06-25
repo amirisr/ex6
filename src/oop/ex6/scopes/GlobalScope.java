@@ -85,6 +85,11 @@ public class GlobalScope extends Scope {
                         throw new MethodCallInGlobalScopeException(i);
                     }
                     break;
+                case RETURN:
+                    if (count == 0)
+                    {
+                        throw new SyntaxException(i);
+                    }
                 default:
                     throw new SyntaxException(i);
             }
@@ -99,4 +104,5 @@ public class GlobalScope extends Scope {
             scope.testScope();
         }
     }
+
 }
