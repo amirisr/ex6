@@ -136,6 +136,9 @@ public class VarInitLine {
 			}
 			names.add(matcher.group(1));
 			values.add(matcher.group(2));
+			if(isFinal && matcher.group(2) == null){
+				throw new BadVariableDefinition(num);
+			}
 			prevEnd = matcher.end();
 		}
 		if(prevEnd != line.length()){
