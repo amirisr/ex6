@@ -1,6 +1,7 @@
 package oop.ex6.codelines;
 
 import oop.ex6.scopes.BadAssignmentException;
+import oop.ex6.scopes.BadIfWhileConditionException;
 import oop.ex6.scopes.BadVariableDefinition;
 
 import java.util.regex.Matcher;
@@ -32,7 +33,10 @@ public class VarAssignLine {
 	private void processLine() throws BadAssignmentException{
 		line = line.trim().substring(0, line.length()-1); // remove ';' suffix
 		findName();
-		checkAssignment();
+		assignedType = checkAssignment(line);
+		if(assignedType == null){
+			throw new BadAssignmentException(num);
+		}
 	}
 
 	private void findName() throws BadAssignmentException{
@@ -47,28 +51,30 @@ public class VarAssignLine {
 		}
 	}
 
-	private void checkAssignment() throws BadAssignmentException{
+	 static String checkAssignment(String line){
+		String type;
 		if(LineInterpreter.getMatcher(stringRegex,line).matches()){
-			assignedType = VarInitLine.STRING;
+			type = VarInitLine.STRING;
 		}
 		else if(LineInterpreter.getMatcher(charRegex,line).matches()){
-			assignedType = VarInitLine.CHAR;
+			type = VarInitLine.CHAR;
 		}
 		else if(LineInterpreter.getMatcher(intRegex,line).matches()){
-			assignedType = VarInitLine.INT;
+			type = VarInitLine.INT;
 		}
 		else if(LineInterpreter.getMatcher(doubleRegex,line).matches()){
-			assignedType = VarInitLine.DOUBLE;
+			type = VarInitLine.DOUBLE;
 		}
 		else if(LineInterpreter.getMatcher(booleanRegex, line).matches()){
-			assignedType = VarInitLine.BOOLEAN;
+			type = VarInitLine.BOOLEAN;
 		}
 		else if(LineInterpreter.getMatcher(VarInitLine.validVarNameRegex, line).matches()){
-			assignedType = line;
+			type = line;
 		}
 		else {
-			throw new BadAssignmentException(num);
+			type = null;
 		}
+		return type;
 	}
 
 	String[] getAssignment(){

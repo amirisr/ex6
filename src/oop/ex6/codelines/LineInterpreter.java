@@ -47,8 +47,14 @@ public class LineInterpreter {
         else if(VarAssignLine.isLine(line)){
             return CodeLineTypes.VAR_ASSIGNMENT;
         }
-        return CodeLineTypes.ERROR;
-        //TODO
+        else if(MethodCallLine.isLine(line)){
+            return CodeLineTypes.METHOD_CALL;
+        }
+        else{
+            return CodeLineTypes.ERROR;
+            //TODO
+        }
+
     }
 
     /**
@@ -89,7 +95,8 @@ public class LineInterpreter {
     public static void verifyMethodCall(Scope scope, int lineNum) throws MethodCallException
     {
         String line = scope.getGlobalScope().getCodeLines()[lineNum];
-
+        MethodCallLine processor = new MethodCallLine(line, lineNum);
+        //return processor.getParameters();
         return;
         //TODO
     }
