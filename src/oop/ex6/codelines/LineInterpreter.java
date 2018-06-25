@@ -42,8 +42,7 @@ public class LineInterpreter {
     {
         String line = scope.getGlobalScope().getCodeLines()[lineNum];
         VarInitLine processor = new VarInitLine(line);
-        return null;
-        //TODO
+        return processor.getVars();
     }
 
     /**
