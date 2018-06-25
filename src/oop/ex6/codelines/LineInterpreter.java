@@ -4,6 +4,8 @@ import oop.ex6.variables.Variable;
 import oop.ex6.scopes.*;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * A Utility class for all functions necessary for "translating" the code lines (Strings) to appropriate
@@ -12,6 +14,10 @@ import java.util.ArrayList;
  * @author Omer Binyamin.
  */
 public class LineInterpreter {
+    static Matcher getMatcher(String regex, String string){
+        Pattern p = Pattern.compile(regex);
+        return p.matcher(string);
+    }
 
     /**
      * Matches a code line to its type.

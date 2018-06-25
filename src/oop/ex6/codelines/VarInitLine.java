@@ -41,13 +41,9 @@ public class VarInitLine {
 		processLine();
 	}
 
-	private static Matcher getMatcher(String regex, String string){
-		Pattern p = Pattern.compile(regex);
-		return p.matcher(string);
-	}
 
 		static boolean isLine(String line) {
-		Matcher matcher = getMatcher(isLineRegex, line);
+		Matcher matcher = LineInterpreter.getMatcher(isLineRegex, line);
 		return matcher.matches();
 	}
 
@@ -113,7 +109,7 @@ public class VarInitLine {
 			default:
 				throw new BadVariableDefinition(num);
 		}
-		Matcher matcher = getMatcher(regex, line);
+		Matcher matcher = LineInterpreter.getMatcher(regex, line);
 		int prevEnd = 0;
 		while(matcher.find()){
 			int a = matcher.start();

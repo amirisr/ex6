@@ -26,17 +26,13 @@ public class IfWhileLine{
 	 	processLine();
 	 }
 
-	private static Matcher getMatcher(String regex, String string){
-		Pattern p = Pattern.compile(regex);
-		return p.matcher(string);
-	}
 
 	static boolean isLine(String line) {
-		Matcher matcher = getMatcher(isLineRegex, line);
+		Matcher matcher = LineInterpreter.getMatcher(isLineRegex, line);
 		return matcher.matches();
 	}
 
-	void processLine() {
+	private void processLine() {
 		line = line.trim();
 		removeIfWhile();
 		validateCondition();
@@ -61,7 +57,7 @@ public class IfWhileLine{
 			// raise exception, condition is not bounded with parentheses
 		}
 		line = line.substring(1, line.length() - 1) + "||";
-		if (!getMatcher(isConditionLegalRegex, line).matches()) {
+		if (!LineInterpreter.getMatcher(isConditionLegalRegex, line).matches()) {
 			// raise exception
 		}
 		// we know the condition is legal, i.e. has no strings chars spaces etc
@@ -72,7 +68,7 @@ public class IfWhileLine{
 		String[] tmpConditionals = line.split(booleanOperatorRegex);
 		for (int i = 0; i < tmpConditionals.length; i++) {
 			String condition = tmpConditionals[i].trim();
-			if (!getMatcher(notVarRegex, condition).matches()) {
+			if (!LineInterpreter.getMatcher(notVarRegex, condition).matches()) {
 				varsInCondition.add(condition); // the expression is not true/false nor a number, hence it
 				// is a variable
 			}
