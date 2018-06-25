@@ -6,6 +6,7 @@ import oop.ex6.variables.Variable;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class VarInitLine extends Line{
 	private boolean isFinal = false;
@@ -13,12 +14,12 @@ public class VarInitLine extends Line{
 	private ArrayList<String> names = new ArrayList<>();
 	private ArrayList<String> values = new ArrayList<>();
 	private static final String isLineRegex = "\\s*(?:final\\s)?\\s*(?:int|double|char|boolean|String)\\s+.*;\\s*";
-	static final String validVarNameRegex = "(?:_\\w+)|(?:[a-zA-Z]\\w*)";
+	static final String validVarNameRegex = "_\\w+|[a-zA-Z]\\w*";
 	private static final String stringRegex = "("+validVarNameRegex+")\\s*(?:=\\s*(\".*\")\\s*)?,";
 	private static final String intRegex = "("+validVarNameRegex+")\\s*(?:=\\s*(\\d+)\\s*)?,";
 	private static final String doubleRegex = "("+validVarNameRegex+")\\s*(?:=\\s*(\\d+(?:\\.\\d+)?)\\s*)?,";
 	private static final String charRegex = "("+validVarNameRegex+")\\s*(?:=\\s*('.')\\s*)?,";
-	private static final String booleanRegex = "("+validVarNameRegex+")\\s*(?:=\\s*((?:true)|(?:false))\\s*)?,";
+	private static final String booleanRegex = "("+validVarNameRegex+")\\s*(?:=\\s*(true|false)\\s*)?,";
 	static final String FINAL = "final";
 	private static final String INT = "int";
 	private static final String DOUBLE = "double";
@@ -30,6 +31,10 @@ public class VarInitLine extends Line{
 		super(line);
 	}
 
+	static boolean isLine(String line){
+		Matcher matcher = getMatcher(isLineRegex, line);
+		return matcher.matches();
+	}
 
 	void processLine(){
 		line = line.trim(); // remove excess spaces

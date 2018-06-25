@@ -2,6 +2,7 @@ package oop.ex6.codelines;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MethodDefLine extends Line {
 
@@ -18,6 +19,12 @@ public class MethodDefLine extends Line {
 	MethodDefLine(String line){
 		super(line, isLineRegex);
 	}
+
+	static boolean isLine(String line){
+		Matcher matcher = getMatcher(isLineRegex, line);
+		return matcher.matches();
+	}
+
 
 	void processLine(){
 		line = line.trim();

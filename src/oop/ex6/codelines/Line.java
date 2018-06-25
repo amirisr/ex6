@@ -18,6 +18,7 @@ public abstract class Line {
 		this.line = line;
 		isLineRegex = regex;
 	}
+
 	static Matcher getMatcher(String regex, String string){
 		Pattern p = Pattern.compile(regex);
 		return p.matcher(string);
