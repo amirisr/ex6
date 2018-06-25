@@ -27,18 +27,21 @@ public class LineInterpreter {
      */
     public static CodeLineTypes getLineType(String line)
     {
+        if(ReturnLine.isLine(line)){
+            return CodeLineTypes.RETURN;
+        }
+        else if(line.trim().equals("}")){
+            return CodeLineTypes.CLOSE_SCOPE;
+        }
+        else if(line.trim().equals("")){
+            return CodeLineTypes.EMPTY_LINE;
+        }
         if(VarInitLine.isLine(line)){
             return CodeLineTypes.VAR_DEFINITION;
         }
         else if(MethodDefLine.isLine(line)){
             return CodeLineTypes.OPEN_METHOD;
         }
-        else if(line.trim().equals("}")){
-            return CodeLineTypes.CLOSE_SCOPE;
-        }
-        else if(line.trim().equals("")){
-        	return CodeLineTypes.EMPTY_LINE;
-		}
 		else if(line.startsWith("//")){
         	return CodeLineTypes.COMMENT;
 		}
