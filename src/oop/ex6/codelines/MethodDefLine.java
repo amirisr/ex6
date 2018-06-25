@@ -60,10 +60,10 @@ public class MethodDefLine{
 	/*
 	identify the method's name
 	 */
-	private void checkName() {
+	private void checkName() throws BadMethodDefinitionException{
 		Matcher matcher = getMatcher(checkMethodNameRegex, line);
 		if (!matcher.matches()) {
-			//raise exception, name is not up to standard, or the parameters' parentheses are missing
+			throw new BadMethodDefinitionException(num);
 		} else {
 			methodName = matcher.group(1);
 			line = line.substring(methodName.length()); // remove name
