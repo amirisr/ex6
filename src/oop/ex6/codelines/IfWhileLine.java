@@ -7,7 +7,9 @@ import javax.naming.CommunicationException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class IfWhileLine extends Line {
+public class IfWhileLine{
+	int num;
+	String line;
 	final static String isLineRegex = "\\s*(?:while|if).*{\\s*";
 	final static String isConditionLegalRegex = "(?:\\s*(?:_\\w+|[a-zA-Z]\\w*|\\d+(?:\\.\\d+)?)\\s*" + "" +
 												 "(?:\\|{2}|&{2}))+";
@@ -15,11 +17,19 @@ public class IfWhileLine extends Line {
 	final static String notVarRegex = "true|false|\\d+(?:\\.\\d+)?";
 	final static String IF = "if";
 	final static String WHILE = "while";
-	ArrayList<String> varsInCondition = new ArrayList<>();
+	ArrayList<String> varsInCondition;
 
 	 IfWhileLine(String line, int lineNum) throws CompileException {
-	 	super(line, lineNum);
+	 	num = lineNum;
+	 	this.line = line;
+	 	varsInCondition = new ArrayList<>();
+	 	processLine();
 	 }
+
+	static Matcher getMatcher(String regex, String string){
+		Pattern p = Pattern.compile(regex);
+		return p.matcher(string);
+	}
 
 	static boolean isLine(String line) {
 		Matcher matcher = getMatcher(isLineRegex, line);
