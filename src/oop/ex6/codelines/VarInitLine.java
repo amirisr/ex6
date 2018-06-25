@@ -31,7 +31,8 @@ public class VarInitLine {
 	private static final String doubleRegex = "\\s*("+validVarNameRegex+")\\s*(?:=\\s*([+-]?\\d+(?:\\.\\d+)"+
 													  "?)\\s*)?,";
 	private static final String charRegex = "\\s*("+validVarNameRegex+")\\s*(?:=\\s*('.')\\s*)?,";
-	private static final String booleanRegex = "\\s*("+validVarNameRegex+")\\s*(?:=\\s*(true|false)\\s*)?,";
+	private static final String booleanRegex = "\\s*("+validVarNameRegex+")\\s*(?:=\\s*" +
+													   "(true|false|[+-]?\\d+(?:\\.\\d+)?)\\s*)?,";
 
 	static final String FINAL = "final";
 

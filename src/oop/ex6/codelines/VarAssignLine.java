@@ -27,7 +27,7 @@ public class VarAssignLine {
 	}
 
 	static boolean isLine(String line){
-		return LineInterpreter.getMatcher(line, isLineRegex).matches();
+		return LineInterpreter.getMatcher(isLineRegex, line).matches();
 	}
 
 	private void processLine() throws BadAssignmentException{
