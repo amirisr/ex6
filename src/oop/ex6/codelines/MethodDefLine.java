@@ -14,16 +14,6 @@ import java.util.regex.Pattern;
  */
 public class MethodDefLine{
 
-	int num;
-	String line;
-	final static String isLineRegex = "\\s*void\\s+.*{\\s*";
-	final static String checkMethodNameRegex = "([a-zA-Z]\\w*)\\s*\\(.*\\)";
-	final static String checkParamLineRegex = "(?:\\s*(?:final)?\\s*(?:int|double|char|boolean|String)\\s+" + "(?:" + VarInitLine.validVarNameRegex + ")\\s*,)*";
-	final static String parseSingleParamRegex = "(int|double|char|boolean|String)\\s+(" + VarInitLine.validVarNameRegex + ")"; // use this to extract a parameter's name and type
-	String methodName;
-	ArrayList<String> paramTypes;
-	ArrayList<String> paramNames;
-	ArrayList<String> paramIsFinal;
 	private int num;
 	private String line;
 	private final static String isLineRegex = "\\s*void\\s+.*\\{\\s*";
