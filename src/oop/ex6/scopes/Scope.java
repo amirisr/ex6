@@ -42,15 +42,23 @@ public abstract class Scope {
         return vars;
     }
 
-    public void addVariablesFromArrayList(Variable var) {
-        vars.add(var);
+    public void addVariable(Variable variable, int lineNum) throws BadVariableDefinition
+    {
+        for (Variable tmp : vars)
+        {
+            if (variable.getName().equals(tmp.getName()))
+            {
+                throw new BadVariableDefinition(lineNum);
+            }
+        }
+        vars.add(variable);
     }
 
-    public void addVariablesFromArrayList(ArrayList<Variable> variables)
+    public void addVariablesFromArrayList(ArrayList<Variable> variables, int lineNum) throws BadVariableDefinition
     {
         for (Variable variable : variables)
-        if (variables != null) { //ERASE LATER
-            vars.addAll(variables);
+        {
+            addVariable(variable, lineNum);
         }
     }
 

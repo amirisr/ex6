@@ -29,10 +29,10 @@ public class GlobalScope extends Scope {
 
     @Override
     public void testScope() throws CompileException {
+        int methodStart = -1;
+        int count = 0;
         for (int i = getStart(); i <= getEnd(); i++) {
             String line = codeLines[i];
-            int methodStart = -1;
-            int count = 0;
             switch (LineInterpreter.getLineType(line)) {
                 case EMPTY_LINE:
                 case COMMENT:
@@ -55,10 +55,15 @@ public class GlobalScope extends Scope {
                 case CLOSE_SCOPE:
                     count--;
                     if (count == 0) {
+                        MethodScope tmp = new MethodScope(this, methodStart, i);
                         addMethod(new MethodScope(this, methodStart, i));
+//                        for (Variable t : tmp.getParams())
+//                        {
+//                            System.out.println(t.toString());
+//                        }
                     }
                     if (count < 0) {
-                        throw new OverScopeClosersException(i);
+                        throw new NumberOfScopeClosersException(i);
                     }
                     break;
                 case VAR_ASSIGNMENT:
@@ -66,17 +71,18 @@ public class GlobalScope extends Scope {
                     break;
                 case VAR_DEFINITION:
                     ArrayList<Variable> tmp = LineInterpreter.getVariables(this, i);
-                    for (Variable t : tmp)
-                    {
-                        System.out.println(t.toString());
-                    }
-                    addVariablesFromArrayList(tmp);
+                    addVariablesFromArrayList(tmp, i);
                     break;
                 case METHOD_CALL:
                     throw new MethodCallInGlobalScopeException(i);
                 default:
                     throw new SyntaxException(i);
             }
+        }
+
+        if (count != 0)
+        {
+            throw new NumberOfScopeClosersException(getEnd());
         }
 
         for (Scope scope : methods) {

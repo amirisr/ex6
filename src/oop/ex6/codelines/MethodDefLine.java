@@ -4,20 +4,27 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * This class describes an analyser for method definition lines.
+ * @author Amir Israeli
+ * @author Omer Binyamin
+ */
 public class MethodDefLine{
 
-	int num;
-	String line;
-	final static String isLineRegex = "\\s*void\\s+.*{\\s*";
-	final static String checkMethodNameRegex = "([a-zA-Z]\\w*)\\s*\\(.*\\)";
-	final static String checkParamLineRegex = "(?:\\s*(?:final)?\\s*(?:int|double|char|boolean|String)\\s+" + "(?:" + VarInitLine.validVarNameRegex + "))\\s*,)*";
-	final static String parseSingleParamRegex = "(int|double|char|boolean|String)\\s+(" + VarInitLine.validVarNameRegex + ")"; // use this to extract a parameter's name and type
-	String methodName;
-	ArrayList<String> paramTypes;
-	ArrayList<String> paramNames;
-	ArrayList<String> paramIsFinal;
+	private int num;
+	private String line;
+	private final static String isLineRegex = "\\s*void\\s+.*\\{\\s*";
+	private final static String checkMethodNameRegex = "([a-zA-Z]\\w*)\\s*\\(.*\\)";
+	private final static String checkParamLineRegex = "(?:\\s*(?:final)?\\s*" +
+            "(?:int|double|char|boolean|String)" + "\\s+" + "(?:" + VarInitLine.validVarNameRegex + "))\\s*,)*";
+	private final static String parseSingleParamRegex = "(int|double|char|boolean|String)\\s+(" + VarInitLine
+            .validVarNameRegex + ")"; // use this to extract a parameter's name and type
+	private String methodName;
+	private ArrayList<String> paramTypes;
+	private ArrayList<String> paramNames;
+	private ArrayList<String> paramIsFinal;
 
-	MethodDefLine(String line, int lineNum) {
+	public MethodDefLine(String line, int lineNum) {
 		this.line = line;
 		num = lineNum;
 		paramNames = new ArrayList<>();
