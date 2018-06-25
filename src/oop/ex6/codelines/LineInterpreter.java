@@ -29,6 +29,12 @@ public class LineInterpreter {
         else if(line.trim().equals("}")){
             return CodeLineTypes.CLOSE_SCOPE;
         }
+        else if(line.trim().equals("")){
+        	return CodeLineTypes.EMPTY_LINE;
+		}
+		else if(line.startsWith("//")){
+        	return CodeLineTypes.COMMENT;
+		}
         return CodeLineTypes.ERROR;
         //TODO
     }
