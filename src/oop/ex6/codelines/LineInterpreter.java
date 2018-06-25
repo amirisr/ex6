@@ -81,7 +81,6 @@ public class LineInterpreter {
     public static ArrayList<Variable> getParameters(String definition, int lineNum)
             throws BadMethodDefinitionException
     {
-
         return null;
         //TODO
     }
