@@ -37,13 +37,9 @@ public class MethodDefLine{
 		processLine();
 	}
 
-	static Matcher getMatcher(String regex, String string){
-		Pattern p = Pattern.compile(regex);
-		return p.matcher(string);
-	}
 
 	static boolean isLine(String line) {
-		Matcher matcher = getMatcher(isLineRegex, line);
+		Matcher matcher = LineInterpreter.getMatcher(isLineRegex, line);
 		return matcher.matches();
 	}
 
@@ -61,7 +57,7 @@ public class MethodDefLine{
 	identify the method's name
 	 */
 	private void checkName() throws BadMethodDefinitionException{
-		Matcher matcher = getMatcher(checkMethodNameRegex, line);
+		Matcher matcher = LineInterpreter.getMatcher(checkMethodNameRegex, line);
 		if (!matcher.matches()) {
 			throw new BadMethodDefinitionException(num);
 		} else {
@@ -76,7 +72,7 @@ public class MethodDefLine{
 	 */
 	private void checkParamNamesAndTypes() throws BadMethodDefinitionException{
 		line = line.substring(1, line.length() - 1) + ','; // remove the parentheses, add comma
-		if (getMatcher(checkParamLineRegex, line).matches()) {
+		if (LineInterpreter.getMatcher(checkParamLineRegex, line).matches()) {
 			String[] params = line.split(","); // dissect list of parameters to single parameter declaration
 			for (int i = 0; i < params.length; i++) {
 				String param = params[i].trim();
@@ -87,7 +83,7 @@ public class MethodDefLine{
 					paramIsFinal.add("0");
 				}
 				// so far we have a parameter with no "final" prefix, but with type and name
-				Matcher matcher = getMatcher(parseSingleParamRegex, param);
+				Matcher matcher = LineInterpreter.getMatcher(parseSingleParamRegex, param);
 				if (!matcher.matches()) {
 					throw new BadMethodDefinitionException(num);
 				}
