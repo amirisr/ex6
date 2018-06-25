@@ -17,5 +17,9 @@ void f1(int j) {
 }
 
 void f2( String ch, final int tr, char t4) {
+    boolean h = true;
+    if (h) {
+
+    }
 
 }

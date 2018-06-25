@@ -65,7 +65,10 @@ public abstract class Scope {
     public ArrayList<Variable> getAllVariables()
     {
         ArrayList<Variable> tmp = new ArrayList<>();
-        tmp.addAll(getAllVariables());
+        tmp.addAll(getVariables());
+        if (fatherScope != null) {
+            tmp.addAll(fatherScope.getAllVariables());
+        }
         return tmp;
     }
 
