@@ -29,6 +29,15 @@ public class LineInterpreter {
         else if(line.trim().equals("}")){
             return CodeLineTypes.CLOSE_SCOPE;
         }
+        else if(line.trim().equals("")){
+        	return CodeLineTypes.EMPTY_LINE;
+		}
+		else if(line.startsWith("//")){
+        	return CodeLineTypes.COMMENT;
+		}
+		else if(IfWhileLine.isLine(line)){
+            return CodeLineTypes.OPEN_IF_WHILE;
+        }
         return CodeLineTypes.ERROR;
         //TODO
     }
@@ -86,8 +95,9 @@ public class LineInterpreter {
     public static ArrayList<Variable> getParameters(String definition, int lineNum)
             throws BadMethodDefinitionException
     {
-        return null;
-        //TODO
+        MethodDefLine processor = new MethodDefLine(definition, lineNum);
+        processor.processLine();
+        return processor.getParams();
     }
 
     /**
@@ -99,7 +109,9 @@ public class LineInterpreter {
     public static void verifyIfWhileCondition(String condition, int lineNum) throws
             BadIfWhileConditionException
     {
-        return;
+        IfWhileLine processor = new IfWhileLine(condition, lineNum);
+        processor.processLine();
+        ArrayList<String> varNames =  processor.getVarsInCondition();
         //TODO
     }
 }

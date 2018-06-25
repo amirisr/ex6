@@ -1,5 +1,8 @@
 package oop.ex6.codelines;
 
+import oop.ex6.variables.VarTypes;
+import oop.ex6.variables.Variable;
+
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -95,5 +98,14 @@ public class MethodDefLine{
 			//raise exception, the param line did not match syntax
 		}
 
+	}
+
+	ArrayList<Variable> getParams(){
+		ArrayList<Variable> params = new ArrayList<>();
+		for(int i = 0; i < paramNames.size(); i++){
+			params.add(new Variable(VarTypes.StringToType(paramTypes.get(i)), paramNames.get(i), false,
+					paramIsFinal.get(i).equals("1")));
+		}
+		return params;
 	}
 }
