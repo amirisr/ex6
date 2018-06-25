@@ -107,7 +107,7 @@ public class MethodDefLine{
 	ArrayList<Variable> getParams(){
 		ArrayList<Variable> params = new ArrayList<>();
 		for(int i = 0; i < paramNames.size(); i++){
-			params.add(new Variable(VarTypes.StringToType(paramTypes.get(i)), paramNames.get(i), false,
+			params.add(new Variable(VarTypes.StringToType(paramTypes.get(i)), paramNames.get(i), true,
 					paramIsFinal.get(i).equals("1")));
 		}
 		return params;

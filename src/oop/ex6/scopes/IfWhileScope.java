@@ -32,6 +32,7 @@ public class IfWhileScope extends Scope {
                     }
                     else {
                         scopeStart = i;
+                        count++;
                     }
                     break;
                 case METHOD_CALL:

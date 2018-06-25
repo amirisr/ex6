@@ -19,7 +19,14 @@ public class GlobalScope extends Scope {
         return methods;
     }
 
-    public void addMethod(MethodScope method) {
+    public void addMethod(MethodScope method, int numLine) throws BadMethodDefinitionException{
+        for (MethodScope scope : methods)
+        {
+            if (scope.getName().equals(method.getName()))
+            {
+                throw new BadMethodDefinitionException(numLine);
+            }
+        }
         methods.add(method);
     }
 
@@ -56,7 +63,7 @@ public class GlobalScope extends Scope {
                     count--;
                     if (count == 0) {
                         MethodScope tmp = new MethodScope(this, methodStart, i);
-                        addMethod(new MethodScope(this, methodStart, i));
+                        addMethod(tmp, methodStart);
                     }
                     if (count < 0) {
                         throw new NumberOfScopeClosersException(i);

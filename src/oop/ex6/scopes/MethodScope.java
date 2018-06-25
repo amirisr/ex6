@@ -10,18 +10,21 @@ public class MethodScope extends Scope {
 
     private ArrayList<Variable> params;
     private String name;
+    private static int counterID = 0;
 
     public MethodScope(GlobalScope global, int startLine, int endLine) throws BadMethodDefinitionException
     {
         super(global, startLine, endLine);
-        params = LineInterpreter.getParameters(global.getCodeLines()[getStart()], getStart());
-        System.out.println(startLine+1);
-        System.out.println(endLine+1);
-        for (Variable p : params)
-        {
-            System.out.println(p);
-        }
-        System.out.println();
+        name = LineInterpreter.getMethodName(global.getCodeLines()[startLine]);
+        params = LineInterpreter.getParameters(global.getCodeLines()[startLine], startLine);
+//        System.out.println(name);
+//        System.out.println(startLine+1);
+//        System.out.println(endLine+1);
+//        for (Variable p : params)
+//        {
+//            System.out.println(p);
+//        }
+//        System.out.println();
     }
 
 
@@ -34,20 +37,18 @@ public class MethodScope extends Scope {
         String[] codeLines = getGlobalScope().getCodeLines();
         int scopeStart = -1;
         int count = 0;
-        for (int i = getStart() + 1; i < getEnd(); i++)
-        {
+        for (int i = getStart() + 1; i < getEnd(); i++) {
             String line = codeLines[i];
-            switch (LineInterpreter.getLineType(line))
-            {
+            switch (LineInterpreter.getLineType(line)) {
                 case EMPTY_LINE:
                 case COMMENT:
                     break;
                 case OPEN_IF_WHILE:
                     if (count > 0) {
                         count++;
-                    }
-                    else {
+                    } else {
                         scopeStart = i;
+                        count++;
                     }
                     break;
                 case METHOD_CALL:
@@ -57,8 +58,7 @@ public class MethodScope extends Scope {
                     break;
                 case CLOSE_SCOPE:
                     count--;
-                    if (count == 0)
-                    {
+                    if (count == 0) {
                         Scope tmp = new IfWhileScope(this, scopeStart, i);
                         tmp.testScope();
                     }
@@ -74,9 +74,8 @@ public class MethodScope extends Scope {
                 case VAR_DEFINITION:
                     if (count == 0) {
                         ArrayList<Variable> tmp = LineInterpreter.getVariables(this, i);
-                        for (Variable var : tmp)
-                        {
-                            System.out.println("\t"+var);
+                        for (Variable var : tmp) {
+                            //System.out.println("\t"+var);
                         }
                         addVariablesFromArrayList(tmp, i);
                     }
@@ -87,15 +86,22 @@ public class MethodScope extends Scope {
                     throw new SyntaxException(i);
 
             }
+        }
+        if (count != 0 || LineInterpreter.getLineType(codeLines[getEnd()]) != CodeLineTypes.CLOSE_SCOPE) {
+            throw new NumberOfScopeClosersException(getEnd());
+        }
 
-            if (count != 0 || LineInterpreter.getLineType(codeLines[getEnd()]) != CodeLineTypes.CLOSE_SCOPE)
-            {
-                throw new NumberOfScopeClosersException(getEnd());
-            }
-
+        for (Variable variable : getVariables()) {
+            //System.out.println(name + " " + variable);
         }
     }
 
+    /**
+     * Adds an arraylist of variables to the scope.
+     * @param variables The arraylist of variables.
+     * @param lineNum The number of the line.
+     * @throws BadVariableDefinition In case there is already a variable with the same name.
+     */
     @Override
     public void addVariablesFromArrayList(ArrayList<Variable> variables, int lineNum) throws BadVariableDefinition {
         for (Variable variable : variables)
@@ -111,11 +117,23 @@ public class MethodScope extends Scope {
         }
     }
 
+    /**
+     * Returns an arrayList of all variables and parameters - including father scopes.
+     * @return An arrayList of all variables and parameters - including father scopes.
+     */
     @Override
     public ArrayList<Variable> getAllVariables() {
         ArrayList<Variable> tmp = new ArrayList<>();
         tmp.addAll(super.getAllVariables());
         tmp.addAll(params);
         return tmp;
+    }
+
+    /**
+     * Returns the name of the method.
+     * @return The name of the method.
+     */
+    public String getName() {
+        return name;
     }
 }

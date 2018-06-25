@@ -13,10 +13,9 @@ void func(int j, final double r) {
 }
 
 void f1(int j) {
-    int j;
+
 }
 
 void f2( String ch, final int tr, char t4) {
-
 
 }

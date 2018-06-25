@@ -73,6 +73,19 @@ public class LineInterpreter {
     }
 
     /**
+     * Returns the method's name.
+     * @param line The method definition line.
+     * @return The method's name.
+     */
+    public static String getMethodName(String line)
+    {
+        line = line.substring(4); //reduce the void
+        line = line.trim();
+        line = line.split("\\(")[0];
+        return line;
+    }
+
+    /**
      * Verifies an assignment line.
      * @param scope the scope in which the line is on.
      * @param lineNum The line number to check.
