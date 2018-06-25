@@ -25,18 +25,19 @@ public class VarInitLine {
     public static final String validVarNameRegex = "_\\w+|[a-zA-Z]\\w*";
 
 	private static final String stringRegex = "\\s*("+validVarNameRegex+")\\s*(?:=\\s*(\".*\")\\s*)?,";
-	private static final String intRegex = "\\s*("+validVarNameRegex+")\\s*(?:=\\s*(\\d+)\\s*)?,";
-	private static final String doubleRegex = "\\s*("+validVarNameRegex+")\\s*(?:=\\s*(\\d+(?:\\.\\d+)?)\\s*)?,";
+	private static final String intRegex = "\\s*("+validVarNameRegex+")\\s*(?:=\\s*([+-]?\\d+)\\s*)?,";
+	private static final String doubleRegex = "\\s*("+validVarNameRegex+")\\s*(?:=\\s*([+-]?\\d+(?:\\.\\d+)"+
+													  "?)\\s*)?,";
 	private static final String charRegex = "\\s*("+validVarNameRegex+")\\s*(?:=\\s*('.')\\s*)?,";
 	private static final String booleanRegex = "\\s*("+validVarNameRegex+")\\s*(?:=\\s*(true|false)\\s*)?,";
 
 	static final String FINAL = "final";
 
-    private static final String INT = "int";
-    private static final String DOUBLE = "double";
-    private static final String STRING = "String";
-    private static final String CHAR = "char";
-    private static final String BOOLEAN = "boolean";
+    static final String INT = "int";
+    static final String DOUBLE = "double";
+    static final String STRING = "String";
+    static final String CHAR = "char";
+    static final String BOOLEAN = "boolean";
 
     /**
      * Constructor for a variable declaration line analyser.
@@ -52,18 +53,13 @@ public class VarInitLine {
         processLine();
     }
 
-
-		static boolean isLine(String line) {
-		Matcher matcher = LineInterpreter.getMatcher(isLineRegex, line);
-		return matcher.matches();
-	}
     /**
      * Determines if a given line describes a variable declaration or not.
      * @param line The line to analyze.
      * @return true iff the line describes a variable declaration line.
      */
     public static boolean isLine(String line) {
-        Matcher matcher = getMatcher(isLineRegex, line);
+        Matcher matcher = LineInterpreter.getMatcher(isLineRegex, line);
         return matcher.matches();
     }
 

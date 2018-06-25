@@ -11,10 +11,10 @@ public class IfWhileLine{
 	private int num;
 	private String line;
 	private final static String isLineRegex = "\\s*(?:while|if).*{\\s*";
-	private final static String isConditionLegalRegex = "(?:\\s*(?:_\\w+|[a-zA-Z]\\w*|\\d+(?:\\.\\d+)?)\\s*" + "" +
-												 "(?:\\|{2}|&{2}))+";
+	private final static String isConditionLegalRegex = "(?:\\s*(?:_\\w+|[a-zA-Z]\\w*|[+-]?\\d+(?:\\.\\d+)" +
+																"?)\\s*(?:\\|{2}|&{2}))+";
 	private final static String booleanOperatorRegex = "\\|{2}|&{2}";
-	private final static String notVarRegex = "true|false|\\d+(?:\\.\\d+)?";
+	private final static String notVarRegex = "true|false|[+-]?\\d+(?:\\.\\d+)?";
 	private final static String IF = "if";
 	private final static String WHILE = "while";
 	private ArrayList<String> varsInCondition;
