@@ -112,7 +112,6 @@ public class LineInterpreter {
             throws BadMethodDefinitionException
     {
         MethodDefLine processor = new MethodDefLine(definition, lineNum);
-        processor.processLine();
         return processor.getParams();
     }
 
@@ -122,11 +121,37 @@ public class LineInterpreter {
      * @param lineNum The line number to create variables from.
      * @throws BadIfWhileConditionException If the condition was not in correct format.
      */
-    public static void verifyIfWhileCondition(String condition, int lineNum) throws
+    public static void verifyIfWhileCondition(Scope scope, String condition, int lineNum) throws
             BadIfWhileConditionException
     {
         IfWhileLine processor = new IfWhileLine(condition, lineNum);
         ArrayList<String> varNames =  processor.getVarsInCondition();
-        //TODO
+        for (String name : varNames)
+        {
+            boolean foundVar = false;
+            for (Variable var : scope.getAllVariables())
+            {
+                if (name.equals(var.getName()))
+                {
+                    switch (var.getType())
+                    {
+                        case BOOLEAN:
+                        case DOUBLE:
+                        case INT:
+                            if (!var.isInitialized())
+                                throw new BadIfWhileConditionException(lineNum);
+                            break;
+                            default:
+                                throw new BadIfWhileConditionException(lineNum);
+                    }
+                    foundVar = true;
+                    break;
+                }
+            }
+            if (!foundVar)
+            {
+                throw new BadIfWhileConditionException(lineNum);
+            }
+        }
     }
 }

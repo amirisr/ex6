@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 public class IfWhileLine{
 	private int num;
 	private String line;
-	private final static String isLineRegex = "\\s*(?:while|if).*{\\s*";
+	private final static String isLineRegex = "\\s*(?:while|if).*\\{\\s*";
 	private final static String isConditionLegalRegex = "(?:\\s*(?:_\\w+|[a-zA-Z]\\w*|[+-]?\\d+(?:\\.\\d+)" +
 																"?)\\s*(?:\\|{2}|&{2}))+";
 	private final static String booleanOperatorRegex = "\\|{2}|&{2}";

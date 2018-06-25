@@ -62,5 +62,12 @@ public abstract class Scope {
         }
     }
 
+    public ArrayList<Variable> getAllVariables()
+    {
+        ArrayList<Variable> tmp = new ArrayList<>();
+        tmp.addAll(getAllVariables());
+        return tmp;
+    }
+
     public abstract void testScope() throws CompileException;
 }

@@ -10,7 +10,7 @@ public class IfWhileScope extends Scope {
     public IfWhileScope(Scope father, int startLine, int endLine) throws BadIfWhileConditionException
     {
         super(father, startLine, endLine);
-        LineInterpreter.verifyIfWhileCondition(getGlobalScope().getCodeLines()[getStart()], getStart());
+        LineInterpreter.verifyIfWhileCondition(this, getGlobalScope().getCodeLines()[getStart()], getStart());
     }
 
     @Override
@@ -18,7 +18,7 @@ public class IfWhileScope extends Scope {
         String[] codeLines = getGlobalScope().getCodeLines();
         int scopeStart = -1;
         int count = 0;
-        for (int i = getStart() + 1; i <= getEnd(); i++)
+        for (int i = getStart() + 1; i < getEnd(); i++)
         {
             String line = codeLines[i];
             switch (LineInterpreter.getLineType(line))
@@ -35,7 +35,9 @@ public class IfWhileScope extends Scope {
                     }
                     break;
                 case METHOD_CALL:
-                    LineInterpreter.verifyMethodCall(this, i);
+                    if (count == 0) {
+                        LineInterpreter.verifyMethodCall(this, i);
+                    }
                     break;
                 case CLOSE_SCOPE:
                     count--;
@@ -44,19 +46,20 @@ public class IfWhileScope extends Scope {
                         Scope tmp = new IfWhileScope(this, scopeStart, i);
                         tmp.testScope();
                     }
-                    if (count < 0)
-                    {
-                        if (!(count == -1 && i == getEnd())) { // the definition line takes one count
-                            throw new NumberOfScopeClosersException(i);
-                        }
+                    if (count < 0) {
+                        throw new NumberOfScopeClosersException(i);
                     }
                     break;
                 case VAR_ASSIGNMENT:
-                    LineInterpreter.verifyAssignment(this, i);
+                    if (count == 0) {
+                        LineInterpreter.verifyAssignment(this, i);
+                    }
                     break;
                 case VAR_DEFINITION:
-                    ArrayList<Variable> tmp = LineInterpreter.getVariables(this, i);
-                    addVariablesFromArrayList(tmp, i);
+                    if (count == 0) {
+                        ArrayList<Variable> tmp = LineInterpreter.getVariables(this, i);
+                        addVariablesFromArrayList(tmp, i);
+                    }
                     break;
                 case OPEN_METHOD:
                     throw new MethodDefinedInsideScopeException(i);
@@ -66,7 +69,7 @@ public class IfWhileScope extends Scope {
             }
         }
 
-        if (count != -1) // the definition line takes one count
+        if (count != 0 || LineInterpreter.getLineType(codeLines[getEnd()]) != CodeLineTypes.CLOSE_SCOPE)
         {
             throw new NumberOfScopeClosersException(getEnd());
         }

@@ -66,6 +66,11 @@ public class Variable {
 
 	@Override
 	public String toString() {
-		return type + " " + name + ". final: " + isFinal + " assigned: " + isInitialized;
+		return type + " " + name + " final: " + isFinal + " assigned: " + isInitialized;
 	}
+
+	public Variable clone()
+    {
+        return new Variable(type, name, isInitialized, isFinal);
+    }
 }

@@ -1,3 +1,22 @@
 void foo() {
+    int a = 4;
+    int b = 5;
 }
+
+void fo2() {
+    int c;
+    int j;
+}
+
+void func(int j, double r) {
+
+}
+
+void f1(int j) {
+    int j;
+}
+
+void f2( String ch, int tr, char t4) {
+
+
 }

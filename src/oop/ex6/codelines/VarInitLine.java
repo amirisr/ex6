@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static oop.ex6.codelines.LineInterpreter.getMatcher;
+
 /**
  * This class describes an analyser for variable declaration lines.
  * @author Amir Israeli
@@ -125,7 +127,7 @@ public class VarInitLine {
 			default:
 				throw new BadVariableDefinition(num);
 		}
-		Matcher matcher = LineInterpreter.getMatcher(regex, line);
+		Matcher matcher = getMatcher(regex, line);
 		int prevEnd = 0;
 		while(matcher.find()){
 			int a = matcher.start();

@@ -57,24 +57,27 @@ public class GlobalScope extends Scope {
                     if (count == 0) {
                         MethodScope tmp = new MethodScope(this, methodStart, i);
                         addMethod(new MethodScope(this, methodStart, i));
-//                        for (Variable t : tmp.getParams())
-//                        {
-//                            System.out.println(t.toString());
-//                        }
                     }
                     if (count < 0) {
                         throw new NumberOfScopeClosersException(i);
                     }
                     break;
                 case VAR_ASSIGNMENT:
-                    LineInterpreter.verifyAssignment(this, i);
+                    if (count == 0) {
+                        LineInterpreter.verifyAssignment(this, i);
+                    }
                     break;
                 case VAR_DEFINITION:
-                    ArrayList<Variable> tmp = LineInterpreter.getVariables(this, i);
-                    addVariablesFromArrayList(tmp, i);
+                    if (count == 0) {
+                        ArrayList<Variable> tmp = LineInterpreter.getVariables(this, i);
+                        addVariablesFromArrayList(tmp, i);
+                    }
                     break;
                 case METHOD_CALL:
-                    throw new MethodCallInGlobalScopeException(i);
+                    if (count == 0) {
+                        throw new MethodCallInGlobalScopeException(i);
+                    }
+                    break;
                 default:
                     throw new SyntaxException(i);
             }

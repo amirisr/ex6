@@ -19,7 +19,7 @@ public class MethodDefLine{
 	private final static String isLineRegex = "\\s*void\\s+.*\\{\\s*";
 	private final static String checkMethodNameRegex = "([a-zA-Z]\\w*)\\s*\\(.*\\)";
 	private final static String checkParamLineRegex = "(?:\\s*(?:final)?\\s*" +
-            "(?:int|double|char|boolean|String)" + "\\s+" + "(?:" + VarInitLine.validVarNameRegex + "))\\s*,)*";
+            "(?:int|double|char|boolean|String)" + "\\s+" + "(?:" + VarInitLine.validVarNameRegex + ")\\s*,)*";
 	private final static String parseSingleParamRegex = "(int|double|char|boolean|String)\\s+(" + VarInitLine
             .validVarNameRegex + ")"; // use this to extract a parameter's name and type
 	private String methodName;
