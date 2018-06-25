@@ -20,8 +20,11 @@ public class LineInterpreter {
      */
     public static CodeLineTypes getLineType(String line)
     {
-        if(line.matches("\\s*(?:int|double|char|boolean|String)\\s*+.*;")){
+        if(VarInitLine.isLine(line)){
             return CodeLineTypes.VAR_DEFINITION;
+        }
+        else if(MethodDefLine.isLine(line)){
+            return CodeLineTypes.OPEN_METHOD;
         }
         return CodeLineTypes.ERROR;
         //TODO
@@ -38,7 +41,7 @@ public class LineInterpreter {
             throws BadVariableDefinition
     {
         String line = scope.getGlobalScope().getCodeLines()[lineNum];
-
+        VarInitLine processor = new VarInitLine(line);
         return null;
         //TODO
     }

@@ -5,7 +5,7 @@ import java.util.regex.Matcher;
 
 public class MethodDefLine extends Line {
 
-	static String isLineRegex = "\\s*void\\s+.*{\\s*";
+	final static String isLineRegex = "\\s*void\\s+.*{\\s*";
 	static String checkMethodNameRegex = "([a-zA-Z]\\w*)\\s*\\(.*\\)";
 	static String checkParamLineRegex = "(?:\\s*(?:final)?\\s*(?:int|double|char|boolean|String)\\s+" +
 												"(?:"+VarInitLine.validVarNameRegex+"))\\s*,)*";

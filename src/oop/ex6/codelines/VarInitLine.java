@@ -1,6 +1,8 @@
 package oop.ex6.codelines;
 
 import oop.ex6.scopes.BadVariableDefinition;
+import oop.ex6.variables.VarTypes;
+import oop.ex6.variables.Variable;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -8,8 +10,8 @@ import java.util.regex.Matcher;
 public class VarInitLine extends Line{
 	private boolean isFinal = false;
 	private String type;
-	private ArrayList<String> vars;
-	private ArrayList<String> values;
+	private ArrayList<String> names = new ArrayList<>();
+	private ArrayList<String> values = new ArrayList<>();
 	private static final String isLineRegex = "\\s*(?:final\\s)?\\s*(?:int|double|char|boolean|String)\\s+.*;\\s*";
 	static final String validVarNameRegex = "(?:_\\w+)|(?:[a-zA-Z]\\w*)";
 	private static final String stringRegex = "("+validVarNameRegex+")\\s*(?:=\\s*(\".*\")\\s*)?,";
@@ -37,32 +39,12 @@ public class VarInitLine extends Line{
 		findVarsAndValues();
 	}
 
-	/**
-	 * @return list of the variables defined
-	 */
-	public ArrayList<String> getVars() {
+	ArrayList<Variable> getVars(){
+		ArrayList<Variable> vars = new ArrayList<>();
+		for(int i = 0; i < names.size(); i++){
+			vars.add(new Variable(type, names.get(i), values.get(i)!= null, isFinal));
+		}
 		return vars;
-	}
-
-	/**
-	 * @return list of the variables values, None if a variable was not assigned
-	 */
-	public ArrayList<String> getValues() {
-		return values;
-	}
-
-	/**
-	 * @return return the type of the variables defined
-	 */
-	public String getType() {
-		return type;
-	}
-
-	/**
-	 * @return are the variables defined constants
-	 */
-	public boolean isFinal(){
-		return isFinal;
 	}
 
 	/*
@@ -109,7 +91,7 @@ public class VarInitLine extends Line{
 			if(matcher.start() != prevEnd+1){
 				return;// raise exception, the regex skipped a part of the line
 			}
-			vars.add(matcher.group(1));
+			names.add(matcher.group(1));
 			values.add(matcher.group(2));
 		}
 
