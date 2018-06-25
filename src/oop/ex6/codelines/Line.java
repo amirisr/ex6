@@ -12,6 +12,12 @@ public abstract class Line {
 		processLine();
 
 	}
+
+	protected Line(String line, String regex)
+	{
+		this.line = line;
+		isLineRegex = regex;
+	}
 	static Matcher getMatcher(String regex, String string){
 		Pattern p = Pattern.compile(regex);
 		return p.matcher(string);

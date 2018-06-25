@@ -42,7 +42,11 @@ public class VarInitLine extends Line{
 	ArrayList<Variable> getVars(){
 		ArrayList<Variable> vars = new ArrayList<>();
 		for(int i = 0; i < names.size(); i++){
-			vars.add(new Variable(type, names.get(i), values.get(i)!= null, isFinal));
+			Variable tmp = new Variable(VarTypes.StringToType(type), names.get(i), values.get(i)!= null,
+					isFinal);
+			if (tmp != null) {
+				vars.add(tmp);
+			}
 		}
 		return vars;
 	}

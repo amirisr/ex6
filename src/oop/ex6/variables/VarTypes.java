@@ -28,4 +28,27 @@ public enum VarTypes {
         }
         return "";
     }
+
+    /**
+     *
+     * @param type
+     * @return
+     */
+    public static VarTypes StringToType(String type)
+    {
+        switch (type)
+        {
+            case "int":
+                return INT;
+            case "double":
+                return DOUBLE;
+            case "String":
+                return STRING;
+            case "boolean":
+                return BOOLEAN;
+            case "char":
+                return CHAR;
+        }
+        return null;
+    }
 }

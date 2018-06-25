@@ -16,7 +16,7 @@ public class MethodDefLine extends Line {
 	ArrayList<String> paramIsFinal;
 
 	MethodDefLine(String line){
-		super(line);
+		super(line, isLineRegex);
 	}
 
 	void processLine(){
