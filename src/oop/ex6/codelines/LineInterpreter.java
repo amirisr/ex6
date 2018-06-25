@@ -26,6 +26,9 @@ public class LineInterpreter {
         else if(MethodDefLine.isLine(line)){
             return CodeLineTypes.OPEN_METHOD;
         }
+        else if(line.trim().equals("}")){
+            return CodeLineTypes.CLOSE_SCOPE;
+        }
         return CodeLineTypes.ERROR;
         //TODO
     }
