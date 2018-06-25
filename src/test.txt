@@ -8,7 +8,7 @@ void fo2() {
     int j;
 }
 
-void func(int j, double r) {
+void func(int j, final double r) {
 
 }
 
@@ -16,7 +16,7 @@ void f1(int j) {
     int j;
 }
 
-void f2( String ch, int tr, char t4) {
+void f2( String ch, final int tr, char t4) {
 
 
 }

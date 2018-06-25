@@ -1,5 +1,6 @@
 package oop.ex6.codelines;
 
+import oop.ex6.scopes.BadMethodDefinitionException;
 import oop.ex6.variables.VarTypes;
 import oop.ex6.variables.Variable;
 
@@ -27,7 +28,7 @@ public class MethodDefLine{
 	private ArrayList<String> paramNames;
 	private ArrayList<String> paramIsFinal;
 
-	MethodDefLine(String line, int lineNum) {
+	MethodDefLine(String line, int lineNum) throws BadMethodDefinitionException{
 		this.line = line;
 		num = lineNum;
 		paramNames = new ArrayList<>();
@@ -47,7 +48,7 @@ public class MethodDefLine{
 	}
 
 
-	void processLine() {
+	private void processLine() throws BadMethodDefinitionException{
 		line = line.trim();
 		line = line.substring(4); // remove the 'void' prefix
 		line = line.substring(0, line.length() - 1); // remove '{'
@@ -73,11 +74,11 @@ public class MethodDefLine{
 	/*
 	identify every parameter's name and type
 	 */
-	private void checkParamNamesAndTypes() {
+	private void checkParamNamesAndTypes() throws BadMethodDefinitionException{
 		line = line.substring(1, line.length() - 1) + ','; // remove the parentheses, add comma
 		if (getMatcher(checkParamLineRegex, line).matches()) {
 			String[] params = line.split(","); // dissect list of parameters to single parameter declaration
-			for (int i = 0; i < params.length - 1; i++) {
+			for (int i = 0; i < params.length; i++) {
 				String param = params[i].trim();
 				if (param.startsWith(VarInitLine.FINAL)) {
 					paramIsFinal.add("1");
@@ -88,14 +89,17 @@ public class MethodDefLine{
 				// so far we have a parameter with no "final" prefix, but with type and name
 				Matcher matcher = getMatcher(parseSingleParamRegex, param);
 				if (!matcher.matches()) {
-					// raise exception, we shouldn't reach here
+					throw new BadMethodDefinitionException(num);
 				}
 				paramTypes.add(matcher.group(1));
 				paramNames.add(matcher.group(2));
 			}
 
-		} else {
-			//raise exception, the param line did not match syntax
+		} else if(line.equals(",")) {
+			return;
+		}
+		else {
+			throw new BadMethodDefinitionException(num);
 		}
 
 	}
