@@ -19,11 +19,11 @@ public class VarInitLine {
 	private static final String isLineRegex = "\\s*(?:final\\s)?\\s*(?:int|double|char|boolean|String)\\s+.*;\\s*";
 	static final String validVarNameRegex = "_\\w+|[a-zA-Z]\\w*";
 
-	private static final String stringRegex = "("+validVarNameRegex+")\\s*(?:=\\s*(\".*\")\\s*)?,";
-	private static final String intRegex = "("+validVarNameRegex+")\\s*(?:=\\s*(\\d+)\\s*)?,";
-	private static final String doubleRegex = "("+validVarNameRegex+")\\s*(?:=\\s*(\\d+(?:\\.\\d+)?)\\s*)?,";
-	private static final String charRegex = "("+validVarNameRegex+")\\s*(?:=\\s*('.')\\s*)?,";
-	private static final String booleanRegex = "("+validVarNameRegex+")\\s*(?:=\\s*(true|false)\\s*)?,";
+	private static final String stringRegex = "\\s*("+validVarNameRegex+")\\s*(?:=\\s*(\".*\")\\s*)?,";
+	private static final String intRegex = "\\s*("+validVarNameRegex+")\\s*(?:=\\s*(\\d+)\\s*)?,";
+	private static final String doubleRegex = "\\s*("+validVarNameRegex+")\\s*(?:=\\s*(\\d+(?:\\.\\d+)?)\\s*)?,";
+	private static final String charRegex = "\\s*("+validVarNameRegex+")\\s*(?:=\\s*('.')\\s*)?,";
+	private static final String booleanRegex = "\\s*("+validVarNameRegex+")\\s*(?:=\\s*(true|false)\\s*)?,";
 
 	static final String FINAL = "final";
 
@@ -41,7 +41,7 @@ public class VarInitLine {
 		processLine();
 	}
 
-	static Matcher getMatcher(String regex, String string){
+	private static Matcher getMatcher(String regex, String string){
 		Pattern p = Pattern.compile(regex);
 		return p.matcher(string);
 	}
@@ -51,9 +51,9 @@ public class VarInitLine {
 		return matcher.matches();
 	}
 
-	void processLine() throws BadVariableDefinition{
+	private void processLine() throws BadVariableDefinition{
 		line = line.trim(); // remove excess spaces
-		line = line.substring(0,line.length()-1) + ""; // replace the ';' with ','
+		line = line.substring(0,line.length()-1) + ","; // replace the ';' with ','
 		checkFinal();
 		getVarType();
 		findVarsAndValues();
@@ -114,14 +114,15 @@ public class VarInitLine {
 				throw new BadVariableDefinition(num);
 		}
 		Matcher matcher = getMatcher(regex, line);
-		int prevEnd = -1;
+		int prevEnd = 0;
 		while(matcher.find()){
-			if(matcher.start() != prevEnd+1){
+			int a = matcher.start();
+			if(matcher.start() != prevEnd){
 				throw new BadVariableDefinition(num);
 			}
 			names.add(matcher.group(1));
 			values.add(matcher.group(2));
-			prevEnd = matcher.start();
+			prevEnd = matcher.end();
 		}
 
 	}
