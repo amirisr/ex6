@@ -35,6 +35,9 @@ public class LineInterpreter {
 		else if(line.startsWith("//")){
         	return CodeLineTypes.COMMENT;
 		}
+		else if(IfWhileLine.isLine(line)){
+            return CodeLineTypes.OPEN_IF_WHILE;
+        }
         return CodeLineTypes.ERROR;
         //TODO
     }
@@ -106,7 +109,9 @@ public class LineInterpreter {
     public static void verifyIfWhileCondition(String condition, int lineNum) throws
             BadIfWhileConditionException
     {
-        return;
+        IfWhileLine processor = new IfWhileLine(condition, lineNum);
+        processor.processLine();
+        ArrayList<String> varNames =  processor.getVarsInCondition();
         //TODO
     }
 }
