@@ -31,7 +31,8 @@ public class VarAssignLine {
 	}
 
 	private void processLine() throws BadAssignmentException{
-		line = line.trim().substring(0, line.length()-1); // remove ';' suffix
+		line = line.trim();
+		line = line.substring(0, line.length()-1); // remove ';' suffix
 		findName();
 		assignedType = checkAssignment(line);
 		if(assignedType == null){
@@ -40,7 +41,7 @@ public class VarAssignLine {
 	}
 
 	private void findName() throws BadAssignmentException{
-		Matcher matcher = LineInterpreter.getMatcher(line, findNameRegex);
+		Matcher matcher = LineInterpreter.getMatcher(findNameRegex, line);
 		if(!matcher.matches()){
 			throw new BadAssignmentException(num);
 		}
