@@ -1,6 +1,9 @@
 package oop.ex6.codelines;
 
 import java.util.ArrayList;
+import oop.ex6.scopes.CompileException;
+
+import javax.naming.CommunicationException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,9 +17,9 @@ public class IfWhileLine extends Line {
 	final static String WHILE = "while";
 	ArrayList<String> varsInCondition = new ArrayList<>();
 
-	IfWhileLine(String line) {
-		super(line);
-	}
+	 IfWhileLine(String line, int lineNum) throws CompileException {
+	 	super(line, lineNum);
+	 }
 
 	static boolean isLine(String line) {
 		Matcher matcher = getMatcher(isLineRegex, line);

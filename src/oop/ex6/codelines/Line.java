@@ -1,14 +1,19 @@
 package oop.ex6.codelines;
 
+import oop.ex6.scopes.CompileException;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public abstract class Line {
-	String line;
+
+    String line;
+	int num;
 	private static String isLineRegex;
 
-	public Line(String line){
+	public Line(String line, int lineNum) throws CompileException{
 		this.line = line;
+		num = lineNum;
 		processLine();
 
 	}
@@ -24,10 +29,6 @@ public abstract class Line {
 		return p.matcher(string);
 	}
 
-	abstract void processLine();
+	abstract void processLine() throws CompileException;
 
-	static boolean isLine(String line){
-		Matcher matcher = getMatcher(isLineRegex, line);
-		return matcher.matches();
-	}
 }

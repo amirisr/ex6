@@ -63,4 +63,9 @@ public class Variable {
 	public String getName() {
 		return name;
 	}
+
+	@Override
+	public String toString() {
+		return type + " " + name + ". final: " + isFinal + " assigned: " + isInitialized;
+	}
 }

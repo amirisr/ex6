@@ -1,6 +1,7 @@
 package oop.ex6.codelines;
 
 import oop.ex6.scopes.BadVariableDefinition;
+import oop.ex6.scopes.CompileException;
 import oop.ex6.variables.VarTypes;
 import oop.ex6.variables.Variable;
 
@@ -12,23 +13,27 @@ public class VarInitLine extends Line {
 	private boolean isFinal = false;
 	private String type;
 	private ArrayList<String> names = new ArrayList<>();
+
 	private ArrayList<String> values = new ArrayList<>();
 	private static final String isLineRegex = "\\s*(?:final\\s)?\\s*(?:int|double|char|boolean|String)\\s+.*;\\s*";
 	static final String validVarNameRegex = "_\\w+|[a-zA-Z]\\w*";
-	private static final String stringRegex = "(" + validVarNameRegex + ")\\s*(?:=\\s*(\".*\")\\s*)?,";
-	private static final String intRegex = "(" + validVarNameRegex + ")\\s*(?:=\\s*(\\d+)\\s*)?,";
-	private static final String doubleRegex = "(" + validVarNameRegex + ")\\s*(?:=\\s*(\\d+(?:\\.\\d+)?)\\s*)?,";
-	private static final String charRegex = "(" + validVarNameRegex + ")\\s*(?:=\\s*('.')\\s*)?,";
-	private static final String booleanRegex = "(" + validVarNameRegex + ")\\s*(?:=\\s*(true|false)\\s*)?,";
+
+	private static final String stringRegex = "("+validVarNameRegex+")\\s*(?:=\\s*(\".*\")\\s*)?,";
+	private static final String intRegex = "("+validVarNameRegex+")\\s*(?:=\\s*(\\d+)\\s*)?,";
+	private static final String doubleRegex = "("+validVarNameRegex+")\\s*(?:=\\s*(\\d+(?:\\.\\d+)?)\\s*)?,";
+	private static final String charRegex = "("+validVarNameRegex+")\\s*(?:=\\s*('.')\\s*)?,";
+	private static final String booleanRegex = "("+validVarNameRegex+")\\s*(?:=\\s*(true|false)\\s*)?,";
+
 	static final String FINAL = "final";
+
 	private static final String INT = "int";
 	private static final String DOUBLE = "double";
 	private static final String STRING = "String";
 	private static final String CHAR = "char";
 	private static final String BOOLEAN = "boolean";
 
-	public VarInitLine(String line) {
-		super(line);
+	public VarInitLine(String line, int lineNum) throws CompileException {
+		super(line, lineNum);
 	}
 
 	static boolean isLine(String line) {
@@ -36,9 +41,9 @@ public class VarInitLine extends Line {
 		return matcher.matches();
 	}
 
-	void processLine() {
+	void processLine() throws BadVariableDefinition{
 		line = line.trim(); // remove excess spaces
-		line = line.substring(0, line.length() - 1) + ","; // replace the ';' with ','
+		line = line.substring(0,line.length()-1) + ""; // replace the ';' with ','
 		checkFinal();
 		getVarType();
 		findVarsAndValues();
@@ -77,27 +82,32 @@ public class VarInitLine extends Line {
 	/*
 	find and extract all of the vars initiated and their values if assigned
 	 */
-	private void findVarsAndValues() {
+	private void findVarsAndValues() throws BadVariableDefinition{
 		String regex = "";
 		switch (type) {
 			case INT:
 				regex = intRegex;
+				break;
 			case DOUBLE:
 				regex = doubleRegex;
+				break;
 			case STRING:
 				regex = stringRegex;
+				break;
 			case BOOLEAN:
 				regex = booleanRegex;
+				break;
 			case CHAR:
 				regex = charRegex;
+				break;
 			default:
-				// raise exception, we shouldn't reach here
+				throw new BadVariableDefinition(num);
 		}
 		Matcher matcher = getMatcher(regex, line);
 		int prevEnd = 0;
-		while (matcher.find()) {
-			if (matcher.start() != prevEnd + 1) {
-				return;// raise exception, the regex skipped a part of the line
+		while(matcher.find()){
+			if(matcher.start() != prevEnd+1){
+				throw new BadVariableDefinition(num);
 			}
 			names.add(matcher.group(1));
 			values.add(matcher.group(2));

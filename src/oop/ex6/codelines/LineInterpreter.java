@@ -38,10 +38,10 @@ public class LineInterpreter {
      * @throws BadVariableDefinition If the line was not in correct format.
      */
     public static ArrayList<Variable> getVariables(Scope scope, int lineNum)
-            throws BadVariableDefinition
+            throws CompileException
     {
         String line = scope.getGlobalScope().getCodeLines()[lineNum];
-        VarInitLine processor = new VarInitLine(line);
+        VarInitLine processor = new VarInitLine(line, lineNum);
         return processor.getVars();
     }
 

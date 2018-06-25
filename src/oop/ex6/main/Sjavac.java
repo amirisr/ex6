@@ -42,9 +42,19 @@ public class Sjavac {
             GlobalScope global = new GlobalScope(lines);
             try  {
                 global.testScope();
-            } catch (CompileException cmp) {
             }
-
+            catch (CompileException cmp) {
+                success = false;
+                System.out.println(cmp.getMessage());
+            }
+            if (success)
+            {
+                System.out.println(0);
+            }
+            else
+            {
+                System.out.println(1);
+            }
         }
     }
 }

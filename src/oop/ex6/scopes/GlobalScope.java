@@ -66,6 +66,10 @@ public class GlobalScope extends Scope {
                     break;
                 case VAR_DEFINITION:
                     ArrayList<Variable> tmp = LineInterpreter.getVariables(this, i);
+                    for (Variable t : tmp)
+                    {
+                        System.out.println(t.toString());
+                    }
                     addVariablesFromArrayList(tmp);
                     break;
                 case METHOD_CALL:
