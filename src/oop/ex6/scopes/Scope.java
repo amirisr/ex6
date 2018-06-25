@@ -73,4 +73,21 @@ public abstract class Scope {
     }
 
     public abstract void testScope() throws CompileException;
+
+    public Variable findVariable(String var)
+    {
+        Scope pos = this;
+        while (pos != null)
+        {
+            for (Variable tmp : pos.getVariables())
+            {
+                if (var.equals(tmp.getName()))
+                {
+                    return tmp;
+                }
+            }
+            pos = pos.fatherScope;
+        }
+        return null;
+    }
 }

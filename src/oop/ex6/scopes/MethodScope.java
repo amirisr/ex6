@@ -17,14 +17,6 @@ public class MethodScope extends Scope {
         super(global, startLine, endLine);
         name = LineInterpreter.getMethodName(global.getCodeLines()[startLine]);
         params = LineInterpreter.getParameters(global.getCodeLines()[startLine], startLine);
-//        System.out.println(name);
-//        System.out.println(startLine+1);
-//        System.out.println(endLine+1);
-//        for (Variable p : params)
-//        {
-//            System.out.println(p);
-//        }
-//        System.out.println();
     }
 
 
@@ -74,9 +66,6 @@ public class MethodScope extends Scope {
                 case VAR_DEFINITION:
                     if (count == 0) {
                         ArrayList<Variable> tmp = LineInterpreter.getVariables(this, i);
-                        for (Variable var : tmp) {
-                            //System.out.println("\t"+var);
-                        }
                         addVariablesFromArrayList(tmp, i);
                     }
                     break;
@@ -89,10 +78,6 @@ public class MethodScope extends Scope {
         }
         if (count != 0 || LineInterpreter.getLineType(codeLines[getEnd()]) != CodeLineTypes.CLOSE_SCOPE) {
             throw new NumberOfScopeClosersException(getEnd());
-        }
-
-        for (Variable variable : getVariables()) {
-            //System.out.println(name + " " + variable);
         }
     }
 
@@ -125,6 +110,14 @@ public class MethodScope extends Scope {
     public ArrayList<Variable> getAllVariables() {
         ArrayList<Variable> tmp = new ArrayList<>();
         tmp.addAll(super.getAllVariables());
+        tmp.addAll(params);
+        return tmp;
+    }
+
+    @Override
+    public ArrayList<Variable> getVariables() {
+        ArrayList<Variable> tmp = new ArrayList<>();
+        tmp.addAll(super.getVariables());
         tmp.addAll(params);
         return tmp;
     }

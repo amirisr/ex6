@@ -69,8 +69,8 @@ public class Variable {
 		return type + " " + name + " final: " + isFinal + " assigned: " + isInitialized;
 	}
 
-	public Variable clone()
+	public void setAsInitialized()
     {
-        return new Variable(type, name, isInitialized, isFinal);
+        isInitialized = true;
     }
 }

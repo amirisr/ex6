@@ -1,5 +1,6 @@
 package oop.ex6.codelines;
 
+import oop.ex6.variables.VarTypes;
 import oop.ex6.variables.Variable;
 import oop.ex6.scopes.*;
 
@@ -94,9 +95,41 @@ public class LineInterpreter {
     public static void verifyAssignment(Scope scope, int lineNum) throws BadAssignmentException
     {
         String line = scope.getGlobalScope().getCodeLines()[lineNum];
-        // need to get assignment details from VarAssignLine
-        return;
-        //TODO
+        VarAssignLine processor = new VarAssignLine(line, lineNum);
+        String[] assignmentArguments =  processor.getAssignment();
+        String toAssignName = assignmentArguments[0];
+        Variable toAssignVar = scope.findVariable(toAssignName);
+        if (toAssignVar == null)
+        {
+            throw new BadAssignmentException(lineNum);
+        }
+        if (toAssignVar.isFinal())
+        {
+            throw new BadAssignmentException(lineNum);
+        }
+
+        String toBeAssignName = assignmentArguments[1];
+        VarTypes toBeAssignType = VarTypes.StringToType(toBeAssignName);
+        if (toBeAssignType == null)
+        {
+            Variable toBeAssigned = scope.findVariable(toAssignName);
+            if (toBeAssigned == null)
+            {
+                throw new BadAssignmentException(lineNum);
+            }
+            if (toBeAssigned.getType() != toAssignVar.getType())
+            {
+                throw new BadAssignmentException(lineNum);
+            }
+        }
+        else
+        {
+            if (toBeAssignType != toAssignVar.getType())
+            {
+                throw new BadAssignmentException(lineNum);
+            }
+        }
+        toAssignVar.setAsInitialized();
     }
 
     /**
@@ -141,27 +174,17 @@ public class LineInterpreter {
         ArrayList<String> varNames =  processor.getVarsInCondition();
         for (String name : varNames)
         {
-            boolean foundVar = false;
-            for (Variable var : scope.getAllVariables())
+            Variable var = scope.findVariable(name);
+            if (var == null)
             {
-                if (name.equals(var.getName()))
-                {
-                    switch (var.getType())
-                    {
-                        case BOOLEAN:
-                        case DOUBLE:
-                        case INT:
-                            if (!var.isInitialized())
-                                throw new BadIfWhileConditionException(lineNum);
-                            break;
-                            default:
-                                throw new BadIfWhileConditionException(lineNum);
-                    }
-                    foundVar = true;
-                    break;
-                }
+                throw new BadIfWhileConditionException(lineNum);
             }
-            if (!foundVar)
+            if (!var.isInitialized())
+            {
+                throw new BadIfWhileConditionException(lineNum);
+            }
+            if (!(var.getType() == VarTypes.BOOLEAN || var.getType() == VarTypes.DOUBLE || var.getType() ==
+                    VarTypes.INT))
             {
                 throw new BadIfWhileConditionException(lineNum);
             }
