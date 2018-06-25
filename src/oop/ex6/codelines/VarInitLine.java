@@ -9,12 +9,13 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class VarInitLine extends Line {
+public class VarInitLine {
+	private String line;
+	private int num;
 	private boolean isFinal = false;
 	private String type;
-	private ArrayList<String> names = new ArrayList<>();
-
-	private ArrayList<String> values = new ArrayList<>();
+	private ArrayList<String> names;
+	private ArrayList<String> values;
 	private static final String isLineRegex = "\\s*(?:final\\s)?\\s*(?:int|double|char|boolean|String)\\s+.*;\\s*";
 	static final String validVarNameRegex = "_\\w+|[a-zA-Z]\\w*";
 
@@ -33,10 +34,19 @@ public class VarInitLine extends Line {
 	private static final String BOOLEAN = "boolean";
 
 	public VarInitLine(String line, int lineNum) throws CompileException {
-		super(line, lineNum);
+		this.line = line;
+		num = lineNum;
+		names = new ArrayList<String>();
+		values = new ArrayList<String>();
+		processLine();
 	}
 
-	static boolean isLine(String line) {
+	static Matcher getMatcher(String regex, String string){
+		Pattern p = Pattern.compile(regex);
+		return p.matcher(string);
+	}
+
+		static boolean isLine(String line) {
 		Matcher matcher = getMatcher(isLineRegex, line);
 		return matcher.matches();
 	}
@@ -104,13 +114,14 @@ public class VarInitLine extends Line {
 				throw new BadVariableDefinition(num);
 		}
 		Matcher matcher = getMatcher(regex, line);
-		int prevEnd = 0;
+		int prevEnd = -1;
 		while(matcher.find()){
 			if(matcher.start() != prevEnd+1){
 				throw new BadVariableDefinition(num);
 			}
 			names.add(matcher.group(1));
 			values.add(matcher.group(2));
+			prevEnd = matcher.start();
 		}
 
 	}

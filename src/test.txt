@@ -1,1 +1,1 @@
-final double a = 1;
+final double a = 1,g;

@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class MethodDefLine extends Line {
+public class MethodDefLine{
 
+	int num;
+	String line;
 	final static String isLineRegex = "\\s*void\\s+.*{\\s*";
 	final static String checkMethodNameRegex = "([a-zA-Z]\\w*)\\s*\\(.*\\)";
 	final static String checkParamLineRegex = "(?:\\s*(?:final)?\\s*(?:int|double|char|boolean|String)\\s+" + "(?:" + VarInitLine.validVarNameRegex + "))\\s*,)*";
@@ -15,8 +17,18 @@ public class MethodDefLine extends Line {
 	ArrayList<String> paramNames;
 	ArrayList<String> paramIsFinal;
 
-	MethodDefLine(String line) {
-		super(line, isLineRegex);
+	MethodDefLine(String line, int lineNum) {
+		this.line = line;
+		num = lineNum;
+		paramNames = new ArrayList<>();
+		paramTypes = new ArrayList<>();
+		paramIsFinal = new ArrayList<>();
+		processLine();
+	}
+
+	static Matcher getMatcher(String regex, String string){
+		Pattern p = Pattern.compile(regex);
+		return p.matcher(string);
 	}
 
 	static boolean isLine(String line) {
