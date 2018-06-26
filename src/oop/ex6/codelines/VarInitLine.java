@@ -23,13 +23,13 @@ public class VarInitLine {
     private static final String isLineRegex = "\\s*(?:final\\s)?\\s*(?:int|double|char|boolean|String)\\s+.*;\\s*";
     public static final String validVarNameRegex = "_\\w+|[a-zA-Z]\\w*";
 
-	private static final String stringRegex = "\\s*("+validVarNameRegex+")\\s*(?:=\\s*(\".*\")\\s*)?,";
-	private static final String intRegex = "\\s*("+validVarNameRegex+")\\s*(?:=\\s*([+-]?\\d+)\\s*)?,";
+	private static final String stringRegex = "\\s*("+validVarNameRegex+")\\s*(?:=\\s*(\".*\"|"+validVarNameRegex+")\\s*)?,";
+	private static final String intRegex = "\\s*("+validVarNameRegex+")\\s*(?:=\\s*([+-]?\\d+|"+validVarNameRegex+")\\s*)?,";
 	private static final String doubleRegex = "\\s*("+validVarNameRegex+")\\s*(?:=\\s*([+-]?\\d+(?:\\.\\d+)"+
-													  "?)\\s*)?,";
-	private static final String charRegex = "\\s*("+validVarNameRegex+")\\s*(?:=\\s*('.')\\s*)?,";
+													  "?|"+validVarNameRegex+")\\s*)?,";
+	private static final String charRegex = "\\s*("+validVarNameRegex+")\\s*(?:=\\s*('.'|"+validVarNameRegex+")\\s*)?,";
 	private static final String booleanRegex = "\\s*("+validVarNameRegex+")\\s*(?:=\\s*" +
-													   "(true|false|[+-]?\\d+(?:\\.\\d+)?)\\s*)?,";
+													   "(true|false|[+-]?\\d+(?:\\.\\d+)?|"+validVarNameRegex+")\\s*)?,";
 
 	static final String FINAL = "final";
 
@@ -146,5 +146,19 @@ public class VarInitLine {
 
 	}
 
+	public boolean isFinal() {
+		return isFinal;
+	}
 
+	public String getType(){
+		return type;
+	}
+
+	public ArrayList<String> getValues() {
+		return values;
+	}
+
+	public ArrayList<String> getNames() {
+		return names;
+	}
 }
