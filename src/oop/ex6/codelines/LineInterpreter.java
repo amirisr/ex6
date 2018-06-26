@@ -70,7 +70,51 @@ public class LineInterpreter {
     {
         String line = scope.getGlobalScope().getCodeLines()[lineNum];
         VarInitLine processor = new VarInitLine(line, lineNum);
-        return processor.getVars();
+        boolean isFinal = processor.isFinal();
+        VarTypes type = VarTypes.StringToType(processor.getType());
+        ArrayList<String> varsToAssignNames = processor.getNames();
+        ArrayList<String> valuesNames = processor.getValues();
+        ArrayList<Variable> result = new ArrayList<>();
+        for (int i = 0; i < varsToAssignNames.size(); i++)
+        {
+            String varName = varsToAssignNames.get(i);
+            if (valuesNames.get(i) == null)
+            {
+                if (isFinal)
+                {
+                    throw new BadVariableDefinition(i);
+                }
+                result.add(new Variable(type, varName, false, false));
+                continue;
+            }
+            VarTypes argumentType = VarTypes.StringToType(valuesNames.get(i));
+            if (argumentType == null)
+            {
+                Variable tmp = scope.findVariable(valuesNames.get(i));
+                if (tmp.getName().equals(varName))
+                {
+                    throw new BadVariableDefinition(i);
+                }
+                if (!tmp.isInitialized())
+                {
+                    throw new BadVariableDefinition(i);
+                }
+                if (!VarTypes.isAssignmentLegit(type, tmp.getType()))
+                {
+                    throw new BadVariableDefinition(i);
+                }
+                result.add(new Variable(type, varName, true, isFinal));
+                continue;
+            }
+            else {
+                if (!VarTypes.isAssignmentLegit(type, argumentType)) {
+                    throw new BadVariableDefinition(i);
+                }
+                result.add(new Variable(type, varName, true, isFinal));
+                continue;
+            }
+        }
+        return result;
     }
 
     /**
