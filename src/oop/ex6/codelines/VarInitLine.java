@@ -10,71 +10,75 @@ import static oop.ex6.codelines.LineInterpreter.getMatcher;
 
 /**
  * This class describes an analyser for variable declaration lines.
+ *
  * @author Amir Israeli
  * @author Omer Binyamin
  */
 public class VarInitLine {
-    private String line;
-    private int num;
-    private boolean isFinal = false;
-    private String type;
-    private ArrayList<String> names;
-    private ArrayList<String> values;
-    private static final String isLineRegex = "\\s*(?:final\\s)?\\s*(?:int|double|char|boolean|String)\\s+.*;\\s*";
-    public static final String validVarNameRegex = "_\\w+|[a-zA-Z]\\w*";
+	private String line;
+	private int num;
+	private boolean isFinal = false;
+	private String type;
+	private ArrayList<String> names;
+	private ArrayList<String> values;
+	private static final String isLineRegex = "\\s*(?:final\\s)?\\s*(?:int|double|char|boolean|String)\\s+.*;\\s*";
+	public static final String validVarNameRegex = "_\\w+|[a-zA-Z]\\w*";
 
-	private static final String stringRegex = "\\s*("+validVarNameRegex+")\\s*(?:=\\s*(\".*\"|"+validVarNameRegex+")\\s*)?,";
-	private static final String intRegex = "\\s*("+validVarNameRegex+")\\s*(?:=\\s*([+-]?\\d+|"+validVarNameRegex+")\\s*)?,";
-	private static final String doubleRegex = "\\s*("+validVarNameRegex+")\\s*(?:=\\s*([+-]?\\d+(?:\\.\\d+)"+
-													  "?|"+validVarNameRegex+")\\s*)?,";
-	private static final String charRegex = "\\s*("+validVarNameRegex+")\\s*(?:=\\s*('.'|"+validVarNameRegex+")\\s*)?,";
-	private static final String booleanRegex = "\\s*("+validVarNameRegex+")\\s*(?:=\\s*" +
-													   "(true|false|[+-]?\\d+(?:\\.\\d+)?|"+validVarNameRegex+")\\s*)?,";
+	private static final String stringRegex = "\\s*(" + validVarNameRegex + ")\\s*(?:=\\s*(\".*\"|" + validVarNameRegex + ")\\s*)?,";
+	private static final String intRegex = "\\s*(" + validVarNameRegex + ")\\s*(?:=\\s*([+-]?\\d+|" + validVarNameRegex + ")\\s*)?,";
+	private static final String doubleRegex = "\\s*(" + validVarNameRegex + ")\\s*(?:=\\s*([+-]?\\d+(?:\\.\\d+)" + "?|" + validVarNameRegex + ")\\s*)?,";
+	private static final String charRegex = "\\s*(" + validVarNameRegex + ")\\s*(?:=\\s*('.'|" + validVarNameRegex + ")\\s*)?,";
+	private static final String booleanRegex = "\\s*(" + validVarNameRegex + ")\\s*(?:=\\s*" + "(true|false|[+-]?\\d+(?:\\.\\d+)?|" + validVarNameRegex + ")\\s*)?,";
 
 	static final String FINAL = "final";
 
-    static final String INT = "int";
-    static final String DOUBLE = "double";
-    static final String STRING = "String";
-    static final String CHAR = "char";
-    static final String BOOLEAN = "boolean";
+	static final String INT = "int";
+	static final String DOUBLE = "double";
+	static final String STRING = "String";
+	static final String CHAR = "char";
+	static final String BOOLEAN = "boolean";
+	static final String FALSE = "false";
+	static final String TRUE = "true";
 
-    /**
-     * Constructor for a variable declaration line analyser.
-     * @param line The line to analyze.
-     * @param lineNum The line number in its code.
-     * @throws BadVariableDefinition In case the line is not legit line.
-     */
-    public VarInitLine(String line, int lineNum) throws BadVariableDefinition {
-        this.line = line;
-        num = lineNum;
-        names = new ArrayList<String>();
-        values = new ArrayList<String>();
-        processLine();
-    }
+	/**
+	 * Constructor for a variable declaration line analyser.
+	 *
+	 * @param line    The line to analyze.
+	 * @param lineNum The line number in its code.
+	 * @throws BadVariableDefinition In case the line is not legit line.
+	 */
+	public VarInitLine(String line, int lineNum) throws BadVariableDefinition {
+		this.line = line;
+		num = lineNum;
+		names = new ArrayList<String>();
+		values = new ArrayList<String>();
+		processLine();
+	}
 
-    /**
-     * Determines if a given line describes a variable declaration or not.
-     * @param line The line to analyze.
-     * @return true iff the line describes a variable declaration line.
-     */
-    public static boolean isLine(String line) {
-        Matcher matcher = LineInterpreter.getMatcher(isLineRegex, line);
-        return matcher.matches();
-    }
+	/**
+	 * Determines if a given line describes a variable declaration or not.
+	 *
+	 * @param line The line to analyze.
+	 * @return true iff the line describes a variable declaration line.
+	 */
+	public static boolean isLine(String line) {
+		Matcher matcher = LineInterpreter.getMatcher(isLineRegex, line);
+		return matcher.matches();
+	}
 
-	private void processLine() throws BadVariableDefinition{
+	private void processLine() throws BadVariableDefinition {
 		line = line.trim(); // remove excess spaces
-		line = line.substring(0,line.length()-1) + ","; // replace the ';' with ','
+		line = line.substring(0, line.length() - 1) + ","; // replace the ';' with ','
 		checkFinal();
 		getVarType();
 		findVarsAndValues();
 	}
 
-    /**
-     * Returns the variables initialized in the line.
-     * @return The variables initialized in the line.
-     */
+	/**
+	 * Returns the variables initialized in the line.
+	 *
+	 * @return The variables initialized in the line.
+	 */
 	public ArrayList<Variable> getVars() {
 		ArrayList<Variable> vars = new ArrayList<>();
 		for (int i = 0; i < names.size(); i++) {
@@ -105,7 +109,7 @@ public class VarInitLine {
 	/*
 	find and extract all of the vars initiated and their values if assigned
 	 */
-	private void findVarsAndValues() throws BadVariableDefinition{
+	private void findVarsAndValues() throws BadVariableDefinition {
 		String regex = "";
 		switch (type) {
 			case INT:
@@ -128,19 +132,22 @@ public class VarInitLine {
 		}
 		Matcher matcher = getMatcher(regex, line);
 		int prevEnd = 0;
-		while(matcher.find()){
+		while (matcher.find()) {
 			int a = matcher.start();
-			if(matcher.start() != prevEnd){
+			if (matcher.start() != prevEnd) {
 				throw new BadVariableDefinition(num);
 			}
 			names.add(matcher.group(1));
 			values.add(matcher.group(2));
-			if(isFinal && matcher.group(2) == null){
+			if (isFinal && matcher.group(2) == null) {
+				throw new BadVariableDefinition(num);
+			}
+			if (matcher.group(2) != null && !type.equals(BOOLEAN) && (matcher.group(2).equals(FALSE) || matcher.group(2).equals(TRUE))) {
 				throw new BadVariableDefinition(num);
 			}
 			prevEnd = matcher.end();
 		}
-		if(prevEnd != line.length()){
+		if (prevEnd != line.length()) {
 			throw new BadVariableDefinition(num);
 		}
 
@@ -150,20 +157,21 @@ public class VarInitLine {
 		return isFinal;
 	}
 
-	public String getType(){
+	public String getType() {
 		return type;
 	}
 
 	public ArrayList<String> getValues() {
-		for(int i = 0; i < values.size(); i++) {
-            if (values.get(i) != null) {
-                Matcher matcher = LineInterpreter.getMatcher(validVarNameRegex, values.get(i));
-                if (!matcher.matches()) { // the assignment is a legal value
-                    values.set(i, type);
-                }
+		for (int i = 0; i < values.size(); i++) {
+			if (values.get(i) != null) {
+				Matcher matcher = LineInterpreter.getMatcher(validVarNameRegex, values.get(i));
+				if (!matcher.matches() || values.get(i).equals("true") || values.get(i).equals("false")) {
+					// the assignment is a legal value
+					values.set(i, type);
+				}
 
-            }
-        }
+			}
+		}
 		return values;
 	}
 
