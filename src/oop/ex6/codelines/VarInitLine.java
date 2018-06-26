@@ -155,6 +155,12 @@ public class VarInitLine {
 	}
 
 	public ArrayList<String> getValues() {
+		for(int i = 0; i < values.size(); i++){
+			Matcher matcher = LineInterpreter.getMatcher(validVarNameRegex, values.get(i));
+			if(!matcher.matches() && values.get(i) != null){ // the assignment is a legal value
+				values.set(i, type);
+			}
+		}
 		return values;
 	}
 
