@@ -51,4 +51,88 @@ public enum VarTypes {
         }
         return null;
     }
+
+    /**
+     * Takes two types and determines if the assignment of the second one to the first one is compatible.
+     * @param typeToChange The type that will get the data.
+     * @param newType The type that will give the data.
+     * @return true iff the two types are compatibles.
+     */
+    public static boolean isAssignmentLegit(VarTypes typeToChange, VarTypes newType)
+    {
+        switch (typeToChange)
+        {
+            case INT:
+                switch (newType)
+                {
+                    case INT:
+                        return true;
+                    case DOUBLE:
+                        return false;
+                    case BOOLEAN:
+                        return false;
+                    case CHAR:
+                        return false;
+                    case STRING:
+                        return false;
+                }
+            case DOUBLE:
+                switch (newType)
+                {
+                    case INT:
+                        return true;
+                    case DOUBLE:
+                        return true;
+                    case BOOLEAN:
+                        return false;
+                    case CHAR:
+                        return false;
+                    case STRING:
+                        return false;
+                }
+            case BOOLEAN:
+                switch (newType)
+                {
+                    case INT:
+                        return true;
+                    case DOUBLE:
+                        return true;
+                    case BOOLEAN:
+                        return true;
+                    case CHAR:
+                        return false;
+                    case STRING:
+                        return false;
+                }
+            case CHAR:
+                switch (newType)
+                {
+                    case INT:
+                        return false;
+                    case DOUBLE:
+                        return false;
+                    case BOOLEAN:
+                        return false;
+                    case CHAR:
+                        return true;
+                    case STRING:
+                        return false;
+                }
+            case STRING:
+                switch (newType)
+                {
+                    case INT:
+                        return false;
+                    case DOUBLE:
+                        return false;
+                    case BOOLEAN:
+                        return false;
+                    case CHAR:
+                        return false;
+                    case STRING:
+                        return true;
+                }
+        }
+        return false;
+    }
 }

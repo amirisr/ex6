@@ -28,7 +28,15 @@ public class MethodDefLine{
 	private ArrayList<String> paramNames;
 	private ArrayList<String> paramIsFinal;
 
-	MethodDefLine(String line, int lineNum) throws BadMethodDefinitionException{
+
+
+    /**
+     * Constructor for the method definition analyser.
+     * @param line The line to analyze.
+     * @param lineNum The line number to analyze.
+     * @throws BadMethodDefinitionException If the definition is not legal.
+     */
+	public MethodDefLine(String line, int lineNum) throws BadMethodDefinitionException{
 		this.line = line;
 		num = lineNum;
 		paramNames = new ArrayList<>();
@@ -37,8 +45,12 @@ public class MethodDefLine{
 		processLine();
 	}
 
-
-	static boolean isLine(String line) {
+    /**
+     * Returns if the line is a method definition line.
+     * @param line The line to analyze.
+     * @return true iff the line is a method definition line.
+     */
+	public static boolean isLine(String line) {
 		Matcher matcher = LineInterpreter.getMatcher(isLineRegex, line);
 		return matcher.matches();
 	}
@@ -100,7 +112,11 @@ public class MethodDefLine{
 
 	}
 
-	ArrayList<Variable> getParams(){
+    /**
+     * Returns the parameters of the method definition.
+     * @return The parameters of the method definition.
+     */
+	public ArrayList<Variable> getParams(){
 		ArrayList<Variable> params = new ArrayList<>();
 		for(int i = 0; i < paramNames.size(); i++){
 			params.add(new Variable(VarTypes.StringToType(paramTypes.get(i)), paramNames.get(i), true,

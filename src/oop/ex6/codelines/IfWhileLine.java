@@ -3,12 +3,14 @@ package oop.ex6.codelines;
 import java.util.ArrayList;
 
 import oop.ex6.scopes.BadIfWhileConditionException;
-import oop.ex6.scopes.CompileException;
 
-import javax.naming.CommunicationException;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
+/**
+ * This class describes an analyser for if/while condition lines.
+ * @author Amir Israeli
+ * @author Omer Binyamin
+ */
 public class IfWhileLine{
 	private int num;
 	private String line;
@@ -21,15 +23,26 @@ public class IfWhileLine{
 	private final static String WHILE = "while";
 	private ArrayList<String> varsInCondition;
 
-	 IfWhileLine(String line, int lineNum) throws BadIfWhileConditionException{
+	/**
+	 * Constructor for the if/while condition analyser.
+	 * @param line The line to analyze.
+	 * @param lineNum The line number to analyze.
+	 * @throws BadIfWhileConditionException If the condition is not legal.
+	 */
+	public IfWhileLine(String line, int lineNum) throws BadIfWhileConditionException{
 	 	num = lineNum;
 	 	this.line = line;
 	 	varsInCondition = new ArrayList<>();
 	 	processLine();
-	 }
+	}
 
 
-	static boolean isLine(String line) {
+	/**
+	 * Returns if a given line is a if/while condition line.
+	 * @param line The line to analyze.
+	 * @return true iff the line is if/while condition.
+	 */
+	public static boolean isLine(String line) {
 		Matcher matcher = LineInterpreter.getMatcher(isLineRegex, line);
 		return matcher.matches();
 	}
@@ -77,7 +90,11 @@ public class IfWhileLine{
 		}
 	}
 
-	ArrayList<String> getVarsInCondition() {
+	/**
+	 * Returns the variables in the condition line.
+	 * @return The variables in the condition line.
+	 */
+	public ArrayList<String> getVarsInCondition() {
 		return varsInCondition;
 	}
 

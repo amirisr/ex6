@@ -2,7 +2,6 @@ package oop.ex6.variables;
 
 /**
  * A class describing a variable in this exercise.
- *
  * @author Amir Israeli
  * @author Omer Binyamin.
  */
@@ -15,7 +14,6 @@ public class Variable {
 
 	/**
 	 * A constructor for a variable.
-	 *
 	 * @param varType          The variable's type.
 	 * @param varName          The variable's name.
 	 * @param isVarInitialized Does the variable has a value.
@@ -30,7 +28,6 @@ public class Variable {
 
 	/**
 	 * Returns whether this variable is final or not.
-	 *
 	 * @return Whether this variable is final or not.
 	 */
 	public boolean isFinal() {
@@ -39,7 +36,6 @@ public class Variable {
 
 	/**
 	 * Returns whether this variable holds a value or not.
-	 *
 	 * @return Whether this variable holds a value or not.
 	 */
 	public boolean isInitialized() {
@@ -48,7 +44,6 @@ public class Variable {
 
 	/**
 	 * Returns the variable's type.
-	 *
 	 * @return The variable's type.
 	 */
 	public VarTypes getType() {
@@ -63,11 +58,6 @@ public class Variable {
 		return name;
 	}
 
-	@Override
-	public String toString() {
-		return type + " " + name + " final: " + isFinal + " assigned: " + isInitialized;
-	}
-
     /**
      * Sets the variable as initialized.
      */
@@ -76,6 +66,10 @@ public class Variable {
         isInitialized = true;
     }
 
+    /**
+     * Clones/Copies the variable.
+     * @return A new identical Variable.
+     */
     public Variable cloneVariable()
     {
         return new Variable(type, name, isInitialized, isFinal);

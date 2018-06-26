@@ -1,13 +1,10 @@
 package oop.ex6.codelines;
 
 import oop.ex6.scopes.BadVariableDefinition;
-import oop.ex6.scopes.CompileException;
-import oop.ex6.variables.VarTypes;
-import oop.ex6.variables.Variable;
+import oop.ex6.variables.*;
 
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.regex.*;
 
 import static oop.ex6.codelines.LineInterpreter.getMatcher;
 
@@ -74,10 +71,11 @@ public class VarInitLine {
 		findVarsAndValues();
 	}
 
-	/**
-	 * @return the variables initiated in this line
-	 */
-	ArrayList<Variable> getVars() {
+    /**
+     * Returns the variables initialized in the line.
+     * @return The variables initialized in the line.
+     */
+	public ArrayList<Variable> getVars() {
 		ArrayList<Variable> vars = new ArrayList<>();
 		for (int i = 0; i < names.size(); i++) {
 			vars.add(new Variable(VarTypes.StringToType(type), names.get(i), values.get(i) != null, isFinal));

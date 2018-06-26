@@ -6,12 +6,25 @@ import oop.ex6.variables.*;
 
 import java.util.*;
 
+/**
+ * This class represents a method scope.
+ * Since it's a scope it extends the scope.java class.
+ * @author Amir Israeli.
+ * @author Omer Binyamin.
+ */
 public class MethodScope extends Scope {
 
     private ArrayList<Variable> params;
     private String name;
     private static int counterID = 0;
 
+    /**
+     * A constructor for a method scope.
+     * @param global The global scope this method belongs to.
+     * @param startLine The first line of this method in the code.
+     * @param endLine The last line of this method in the code.
+     * @throws BadMethodDefinitionException If the method dedinition is not legal.
+     */
     public MethodScope(GlobalScope global, int startLine, int endLine) throws BadMethodDefinitionException
     {
         super(global, startLine, endLine);
@@ -19,11 +32,18 @@ public class MethodScope extends Scope {
         params = LineInterpreter.getParameters(global.getCodeLines()[startLine], startLine);
     }
 
-
+    /**
+     * Returns all parameters in this method.
+     * @return All parameters in this method.
+     */
     public ArrayList<Variable> getParams() {
         return params;
     }
 
+    /**
+     * Tests and verifies the s-java scope.
+     * @throws CompileException In case the code is not legal.
+     */
     @Override
     public void testScope() throws CompileException {
         ArrayList<Variable> history = getGlobalHistory();
@@ -115,17 +135,9 @@ public class MethodScope extends Scope {
     }
 
     /**
-     * Returns an arrayList of all variables and parameters - including father scopes.
-     * @return An arrayList of all variables and parameters - including father scopes.
+     * Returns all variables in this scope - including parameters.
+     * @return All variables in this scope - including parameters.
      */
-    @Override
-    public ArrayList<Variable> getAllVariables() {
-        ArrayList<Variable> tmp = new ArrayList<>();
-        tmp.addAll(super.getAllVariables());
-        tmp.addAll(params);
-        return tmp;
-    }
-
     @Override
     public ArrayList<Variable> getVariables() {
         ArrayList<Variable> tmp = new ArrayList<>();

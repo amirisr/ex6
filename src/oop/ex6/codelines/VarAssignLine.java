@@ -1,11 +1,14 @@
 package oop.ex6.codelines;
 
 import oop.ex6.scopes.BadAssignmentException;
-import oop.ex6.scopes.BadIfWhileConditionException;
-import oop.ex6.scopes.BadVariableDefinition;
 
 import java.util.regex.Matcher;
 
+/**
+ * This class describes an analyser for variable assignment lines.
+ * @author Amir Israeli
+ * @author Omer Binyamin
+ */
 public class VarAssignLine {
 	private static final String isLineRegex = "\\s*\\w*\\s*=.*;\\s*";
 	private static final String findNameRegex = "("+VarInitLine.validVarNameRegex+")\\s*=.*";
@@ -19,14 +22,24 @@ public class VarAssignLine {
 	private String assignedVar;
 	private String assignedType;
 
-
+	/**
+	 * Constructor for the variable assignment analyser.
+	 * @param line The line to analyze.
+	 * @param lineNum The line number to analyze.
+	 * @throws BadAssignmentException If the assignment is not legal.
+	 */
 	VarAssignLine(String line, int lineNum) throws BadAssignmentException{
 		this.line = line;
 		num = lineNum;
 		processLine();
 	}
 
-	static boolean isLine(String line){
+	/**
+	 * Returns if the line is a variable assignment line.
+	 * @param line The line to analyze.
+	 * @return true iff the line is a variable assignment line.
+	 */
+	public static boolean isLine(String line){
 		return LineInterpreter.getMatcher(isLineRegex, line).matches();
 	}
 
@@ -52,7 +65,12 @@ public class VarAssignLine {
 		}
 	}
 
-	 static String checkAssignment(String line){
+	/**
+	 *
+	 * @param line
+	 * @return
+	 */
+	 public static String checkAssignment(String line){
 		String type;
 		if(LineInterpreter.getMatcher(stringRegex,line).matches()){
 			type = VarInitLine.STRING;
@@ -78,7 +96,11 @@ public class VarAssignLine {
 		return type;
 	}
 
-	String[] getAssignment(){
+	/**
+	 * Returns the assignments in the line.
+	 * @return The assignments in the line.
+	 */
+	public String[] getAssignment(){
 		String[] assignment = new String[2];
 		assignment[0] = assignedVar;
 		assignment[1] = assignedType;

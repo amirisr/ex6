@@ -5,22 +5,40 @@ import oop.ex6.scopes.MethodCallException;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 
+
+/**
+ * This class describes an analyser for method calls lines.
+ * @author Amir Israeli
+ * @author Omer Binyamin
+ */
 public class MethodCallLine {
 	private int num;
 	private String line;
 	private String methodName;
 	private ArrayList<String> parameters = new ArrayList<>();
-	static private final String isLineRegex = "\\s*[a-zA-Z]\\w*\\s*\\(.*\\)\\s*;\\s*";
-	static private final String getNameRegex = "([a-zA-Z]\\w*)\\s*\\(.*\\)";
-	static private final String getParameterRegex = "^\\s*(\".*\"|'.'|[+-]?\\d+(?:\\.\\d+)?|_\\w+|[a-zA-Z]\\w*)\\s*,";
+	private static final String isLineRegex = "\\s*[a-zA-Z]\\w*\\s*\\(.*\\)\\s*;\\s*";
+	private static final String getNameRegex = "([a-zA-Z]\\w*)\\s*\\(.*\\)";
+	private static final String getParameterRegex = "^\\s*(\".*\"|'.'|[+-]?\\d+(?:\\.\\d+)" +
+            "?|_\\w+|[a-zA-Z]\\w*)\\s*,";
 
-	MethodCallLine(String line, int lineNum) throws MethodCallException{
+    /**
+     * Constructor for the method calls analyser.
+     * @param line The line to analyze.
+     * @param lineNum The line number to analyze.
+     * @throws MethodCallException If the call is not legal.
+     */
+	public MethodCallLine(String line, int lineNum) throws MethodCallException{
 		this.line = line;
 		num = lineNum;
 		processLine();
 	}
 
-	static boolean isLine(String line){
+    /**
+     * Returns if the line is a method call line.
+     * @param line The line to analyze.
+     * @return true iff the line is a method call line.
+     */
+	public static boolean isLine(String line){
 		return LineInterpreter.getMatcher(isLineRegex, line).matches();
 	}
 
@@ -60,7 +78,11 @@ public class MethodCallLine {
 		}
 	}
 
-	ArrayList<String> getParameters(){
+    /**
+     * Returns the arguments of the call.
+     * @return The arguments of the call.
+     */
+	public ArrayList<String> getParameters(){
 		return parameters;
 	}
 

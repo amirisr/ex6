@@ -45,7 +45,7 @@ public class Sjavac {
                 }
                 catch (CompileException cmp) {
                     success = false;
-                    System.out.println(cmp.getMessage());
+                    //System.out.println(cmp.getMessage());
                 }
                 if (success) {
                     System.out.println(0);

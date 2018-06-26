@@ -5,20 +5,40 @@ import oop.ex6.variables.Variable;
 
 import java.util.ArrayList;
 
+/**
+ * This class represents a global scope.
+ * Since it's a scope it extends the scope.java class.
+ * @author Amir Israeli.
+ * @author Omer Binyamin.
+ */
 public class GlobalScope extends Scope {
     private ArrayList<MethodScope> methods;
     private String[] codeLines;
 
+    /**
+     * A constructor for global scopes.
+     * @param lines All the code lines in the file.
+     */
     public GlobalScope(String[] lines) {
         super(null, 0, lines.length - 1);
         methods = new ArrayList<MethodScope>();
         codeLines = lines;
     }
 
+    /**
+     * Returns all the methods in this scope.
+     * @return All the methods in this scope.
+     */
     public ArrayList<MethodScope> getMethods() {
         return methods;
     }
 
+    /**
+     * Adds a new method to this scope.
+     * @param method The method to add.
+     * @param numLine The line number it was defined.
+     * @throws BadMethodDefinitionException If there is already a method in this scope with the same name.
+     */
     public void addMethod(MethodScope method, int numLine) throws BadMethodDefinitionException{
         for (MethodScope scope : methods)
         {
@@ -30,10 +50,18 @@ public class GlobalScope extends Scope {
         methods.add(method);
     }
 
+    /**
+     * Returns all the code lines.
+     * @return All the code lines.
+     */
     public String[] getCodeLines() {
         return codeLines;
     }
 
+    /**
+     * Tests the scope for any s-java compilation errors.
+     * @throws CompileException If there are s-java compilation errors.
+     */
     @Override
     public void testScope() throws CompileException {
         int methodStart = -1;
@@ -106,4 +134,20 @@ public class GlobalScope extends Scope {
         }
     }
 
+    /**
+     * Returns the method with the given name.
+     * @param name the name to check.
+     * @return The method with the given name.
+     */
+    public MethodScope findMethod(String name)
+    {
+        for (MethodScope method : methods)
+        {
+            if (method.getName().equals(name))
+            {
+                return method;
+            }
+        }
+        return null;
+    }
 }

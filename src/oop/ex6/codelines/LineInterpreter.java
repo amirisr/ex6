@@ -1,12 +1,10 @@
 package oop.ex6.codelines;
 
-import oop.ex6.variables.VarTypes;
-import oop.ex6.variables.Variable;
+import oop.ex6.variables.*;
 import oop.ex6.scopes.*;
 
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.regex.*;
 
 /**
  * A Utility class for all functions necessary for "translating" the code lines (Strings) to appropriate
@@ -56,7 +54,6 @@ public class LineInterpreter {
         }
         else{
             return CodeLineTypes.ERROR;
-            //TODO
         }
 
     }
@@ -127,7 +124,7 @@ public class LineInterpreter {
         }
         else
         {
-            if (toBeAssignType != toAssignVar.getType())
+            if (!VarTypes.isAssignmentLegit(toBeAssignType, toAssignVar.getType()))
             {
                 throw new BadAssignmentException(lineNum);
             }
@@ -145,9 +142,61 @@ public class LineInterpreter {
     {
         String line = scope.getGlobalScope().getCodeLines()[lineNum];
         MethodCallLine processor = new MethodCallLine(line, lineNum);
-        //return processor.getParameters();
-        return;
+        ArrayList<String> paramsName =  processor.getParameters();
+        String methodName = getMethodCallName(line);
+        MethodScope method = scope.getGlobalScope().findMethod(methodName);
+        if (method == null)
+        {
+            throw new MethodCallException(lineNum);
+        }
+        ArrayList<Variable> methodParams = method.getParams();
+        if (methodParams.size() != paramsName.size())
+        {
+            throw new MethodCallException(lineNum);
+        }
+
+        for (int i = 0; i < methodParams.size(); i++)
+        {
+            VarTypes argumentType = VarTypes.StringToType(paramsName.get(i));
+            if (argumentType == null)
+            {
+                Variable var = scope.findVariable(paramsName.get(i));
+                if (var == null)
+                {
+                    throw new MethodCallException(lineNum);
+                }
+                if (!var.isInitialized())
+                {
+                    throw new MethodCallException(lineNum);
+                }
+                if (!VarTypes.isAssignmentLegit(methodParams.get(i).getType(), var.getType()))
+                {
+                    throw new MethodCallException(lineNum);
+                }
+
+            }
+            else
+            {
+                if (!VarTypes.isAssignmentLegit(methodParams.get(i).getType(), argumentType))
+                {
+                    throw new MethodCallException(lineNum);
+                }
+            }
+
+        }
         //TODO
+    }
+
+    /**
+     * Gets a method's name from its call line.
+     * @param line The line to evaluate.
+     * @return The method's name.
+     */
+    public static String getMethodCallName(String line)
+    {
+        line = line.trim();
+        line = line.split("\\(")[0];
+        return line;
     }
 
     /**
