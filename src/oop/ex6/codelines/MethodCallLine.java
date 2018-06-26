@@ -66,6 +66,9 @@ public class MethodCallLine {
 			parameters.add(matcher.group(1));
 			line = line.substring(matcher.group(0).length());
 		}
+		if(line.trim().equals(",")){
+			return;
+		}
 		if(line.length() != 0){
 			throw new MethodCallException(num);
 		}
