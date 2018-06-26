@@ -31,16 +31,8 @@ public class MethodScope extends Scope {
         int scopeStart = -1;
         int count = 0;
         boolean wasReturnFound = false;
-        for (int i = getStart() + 1; i < getEnd() - 1; i++) {
+        for (int i = getStart() + 1; i < getEnd(); i++) {
             String line = codeLines[i];
-            if (wasReturnFound)
-            {
-                if (!(LineInterpreter.getLineType(line) == CodeLineTypes.EMPTY_LINE || LineInterpreter
-                        .getLineType(line) == CodeLineTypes.COMMENT))
-                {
-                    throw new SyntaxException(i);
-                }
-            }
             switch (LineInterpreter.getLineType(line)) {
                 case EMPTY_LINE:
                 case COMMENT:
@@ -52,11 +44,13 @@ public class MethodScope extends Scope {
                         scopeStart = i;
                         count++;
                     }
+                    wasReturnFound = false;
                     break;
                 case METHOD_CALL:
                     if (count == 0) {
                         LineInterpreter.verifyMethodCall(this, i);
                     }
+                    wasReturnFound = false;
                     break;
                 case CLOSE_SCOPE:
                     count--;
@@ -67,17 +61,20 @@ public class MethodScope extends Scope {
                     if (count < 0) {
                         throw new NumberOfScopeClosersException(i);
                     }
+                    wasReturnFound = false;
                     break;
                 case VAR_ASSIGNMENT:
                     if (count == 0) {
                         LineInterpreter.verifyAssignment(this, i);
                     }
+                    wasReturnFound = false;
                     break;
                 case VAR_DEFINITION:
                     if (count == 0) {
                         ArrayList<Variable> tmp = LineInterpreter.getVariables(this, i);
                         addVariablesFromArrayList(tmp, i);
                     }
+                    wasReturnFound = false;
                     break;
                 case OPEN_METHOD:
                     throw new MethodDefinedInsideScopeException(i);
@@ -89,11 +86,8 @@ public class MethodScope extends Scope {
 
             }
         }
-        if (LineInterpreter.getLineType(codeLines[getEnd() - 1]) != CodeLineTypes.RETURN)
-        {
-            throw new SyntaxException(getEnd() - 1);
-        }
-        if (count != 0 || LineInterpreter.getLineType(codeLines[getEnd()]) != CodeLineTypes.CLOSE_SCOPE) {
+        if (count != 0 || LineInterpreter.getLineType(codeLines[getEnd()]) != CodeLineTypes.CLOSE_SCOPE ||
+                !wasReturnFound) {
             throw new NumberOfScopeClosersException(getEnd());
         }
         getGlobalScope().setHistory(history);

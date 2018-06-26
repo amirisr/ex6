@@ -1,29 +1,4 @@
 void foo() {
-    int a = 4;
-    int b = 5;
-}
-
-void fo2() {
-    int c;
-    int j;
-}
-
-void func(int j, final double r) {
-
-}
-
-void f1(int j) {
-    j = 5;
-    if(43&& 5.5 || true|| false && j) {
-
-    }
-}
-
-void f2( String ch, final int tr, char t4) {
-    boolean h = 3;
-    if (3 || h && 2.1) {
-
-    }
-
-
+    foo();
+    return;
 }

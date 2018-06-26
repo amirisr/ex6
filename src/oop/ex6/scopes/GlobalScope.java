@@ -90,6 +90,7 @@ public class GlobalScope extends Scope {
                     {
                         throw new SyntaxException(i);
                     }
+                    break;
                 default:
                     throw new SyntaxException(i);
             }

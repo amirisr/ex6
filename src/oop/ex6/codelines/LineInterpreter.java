@@ -33,6 +33,9 @@ public class LineInterpreter {
         else if(line.trim().equals("}")){
             return CodeLineTypes.CLOSE_SCOPE;
         }
+        else if(line.startsWith("//")){
+            return CodeLineTypes.COMMENT;
+        }
         else if(line.trim().equals("")){
             return CodeLineTypes.EMPTY_LINE;
         }
@@ -42,9 +45,6 @@ public class LineInterpreter {
         else if(MethodDefLine.isLine(line)){
             return CodeLineTypes.OPEN_METHOD;
         }
-		else if(line.startsWith("//")){
-        	return CodeLineTypes.COMMENT;
-		}
 		else if(IfWhileLine.isLine(line)){
             return CodeLineTypes.OPEN_IF_WHILE;
         }
