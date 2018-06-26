@@ -83,7 +83,7 @@ public class MethodDefLine{
 	identify every parameter's name and type
 	 */
 	private void checkParamNamesAndTypes() throws BadMethodDefinitionException{
-		line = line.substring(1, line.length() - 1) + ','; // remove the parentheses, add comma
+		line = line.substring(1, line.length() - 1).trim() + ','; // remove the parentheses, add comma
 		if (LineInterpreter.getMatcher(checkParamLineRegex, line).matches()) {
 			String[] params = line.split(","); // dissect list of parameters to single parameter declaration
 			for (int i = 0; i < params.length; i++) {
@@ -100,6 +100,9 @@ public class MethodDefLine{
 					throw new BadMethodDefinitionException(num);
 				}
 				paramTypes.add(matcher.group(1));
+				if(paramNames.contains(matcher.group(2))){
+					throw new BadMethodDefinitionException(num);
+				}
 				paramNames.add(matcher.group(2));
 			}
 

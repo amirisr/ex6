@@ -18,7 +18,7 @@ public class MethodCallLine {
 	private ArrayList<String> parameters = new ArrayList<>();
 	private static final String isLineRegex = "\\s*[a-zA-Z]\\w*\\s*\\(.*\\)\\s*;\\s*";
 	private static final String getNameRegex = "([a-zA-Z]\\w*)\\s*\\(.*\\)";
-	private static final String getParameterRegex = "^\\s*(\".*\"|'.'|[+-]?\\d+(?:\\.\\d+)" +
+	private static final String getParameterRegex = "\\s*(\".*\"|'.'|[+-]?\\d+(?:\\.\\d+)" +
             "?|_\\w+|[a-zA-Z]\\w*)\\s*,";
 
     /**
@@ -52,7 +52,7 @@ public class MethodCallLine {
 
 	private void extractName() throws MethodCallException{
 		Matcher matcher = LineInterpreter.getMatcher(getNameRegex, line);
-		if(!matcher.matches()){
+		if(!matcher.matches()){ // name is not up to standard
 			throw new MethodCallException(num);
 		}
 		methodName = matcher.group(1);
