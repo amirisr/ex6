@@ -61,13 +61,13 @@ public class MethodCallLine {
 
 	private void extractParams() throws MethodCallException{
 		line = line.substring(1, line.length() - 1) + ','; // remove the parentheses, add comma
+		if(line.trim().equals(",")){
+			return;
+		}
 		Matcher matcher = LineInterpreter.getMatcher(getParameterRegex, line);
 		while(matcher.find()){
 			parameters.add(matcher.group(1));
 			line = line.substring(matcher.group(0).length());
-		}
-		if(line.trim().equals(",")){
-			return;
 		}
 		if(line.length() != 0){
 			throw new MethodCallException(num);
@@ -89,4 +89,7 @@ public class MethodCallLine {
 		return parameters;
 	}
 
+	public String getName(){
+		return methodName;
+	}
 }

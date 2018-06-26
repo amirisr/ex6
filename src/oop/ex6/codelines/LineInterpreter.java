@@ -91,6 +91,9 @@ public class LineInterpreter {
             if (argumentType == null)
             {
                 Variable tmp = scope.findVariable(valuesNames.get(i));
+                if(tmp == null){
+                    throw new BadVariableDefinition(i);
+                }
                 if (tmp.getName().equals(varName))
                 {
                     throw new BadVariableDefinition(i);
@@ -168,7 +171,7 @@ public class LineInterpreter {
         }
         else
         {
-            if (!VarTypes.isAssignmentLegit(toBeAssignType, toAssignVar.getType()))
+            if (!VarTypes.isAssignmentLegit(toAssignVar.getType(), toBeAssignType))
             {
                 throw new BadAssignmentException(lineNum);
             }
@@ -187,7 +190,7 @@ public class LineInterpreter {
         String line = scope.getGlobalScope().getCodeLines()[lineNum];
         MethodCallLine processor = new MethodCallLine(line, lineNum);
         ArrayList<String> paramsName =  processor.getParameters();
-        String methodName = getMethodCallName(line);
+        String methodName = processor.getName();
         MethodScope method = scope.getGlobalScope().findMethod(methodName);
         if (method == null)
         {
