@@ -15,5 +15,5 @@ public enum CodeLineTypes {
     VAR_ASSIGNMENT,
     VAR_DEFINITION,
     RETURN,
-    ERROR
+    ERROR;
 }

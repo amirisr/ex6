@@ -16,7 +16,6 @@ public class MethodScope extends Scope {
 
     private ArrayList<Variable> params;
     private String name;
-    private static int counterID = 0;
 
     /**
      * A constructor for a method scope.
@@ -117,17 +116,19 @@ public class MethodScope extends Scope {
      * Adds an arraylist of variables to the scope.
      * @param variables The arraylist of variables.
      * @param lineNum The number of the line.
-     * @throws BadVariableDefinition In case there is already a variable with the same name.
+     * @throws BadVariableDefinitionException In case there is already a variable with the same name.
      */
     @Override
-    public void addVariablesFromArrayList(ArrayList<Variable> variables, int lineNum) throws BadVariableDefinition {
+    public void addVariablesFromArrayList(ArrayList<Variable> variables, int lineNum) throws
+            BadVariableDefinitionException
+    {
         for (Variable variable : variables)
         {
             for (Variable argument : params)
             {
                 if (variable.getName().equals(argument.getName()))
                 {
-                    throw new BadVariableDefinition(lineNum);
+                    throw new BadVariableDefinitionException(lineNum);
                 }
             }
             addVariable(variable, lineNum);

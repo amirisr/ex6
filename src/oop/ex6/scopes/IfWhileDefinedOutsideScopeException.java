@@ -7,6 +7,7 @@ package oop.ex6.scopes;
  * @author Omer Binyamin.
  */
 public class IfWhileDefinedOutsideScopeException extends CompileException {
+    private static final long serialVersionUID = 1L;
 
     /**
      * A constructor for the if/while defined outside scope exception.

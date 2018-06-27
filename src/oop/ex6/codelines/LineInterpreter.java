@@ -63,7 +63,7 @@ public class LineInterpreter {
      * @param scope the scope in which the line is on.
      * @param lineNum The line number to create variables from.
      * @return An ArrayList of Variables.
-     * @throws BadVariableDefinition If the line was not in correct format.
+     * @throws BadVariableDefinitionException If the line was not in correct format.
      */
     public static ArrayList<Variable> getVariables(Scope scope, int lineNum)
             throws CompileException
@@ -71,7 +71,7 @@ public class LineInterpreter {
         String line = scope.getGlobalScope().getCodeLines()[lineNum];
         VarInitLine processor = new VarInitLine(line, lineNum);
         boolean isFinal = processor.isFinal();
-        VarTypes type = VarTypes.StringToType(processor.getType());
+        VarType type = VarType.StringToType(processor.getType());
         ArrayList<String> varsToAssignNames = processor.getNames();
         ArrayList<String> valuesNames = processor.getValues();
         ArrayList<Variable> result = new ArrayList<>();
@@ -82,36 +82,36 @@ public class LineInterpreter {
             {
                 if (isFinal)
                 {
-                    throw new BadVariableDefinition(i);
+                    throw new BadVariableDefinitionException(i);
                 }
                 result.add(new Variable(type, varName, false, false));
                 continue;
             }
-            VarTypes argumentType = VarTypes.StringToType(valuesNames.get(i));
+            VarType argumentType = VarType.StringToType(valuesNames.get(i));
             if (argumentType == null)
             {
                 Variable tmp = scope.findVariable(valuesNames.get(i));
                 if(tmp == null){
-                    throw new BadVariableDefinition(i);
+                    throw new BadVariableDefinitionException(i);
                 }
                 if (tmp.getName().equals(varName))
                 {
-                    throw new BadVariableDefinition(i);
+                    throw new BadVariableDefinitionException(i);
                 }
                 if (!tmp.isInitialized())
                 {
-                    throw new BadVariableDefinition(i);
+                    throw new BadVariableDefinitionException(i);
                 }
-                if (!VarTypes.isAssignmentLegit(type, tmp.getType()))
+                if (!VarType.isAssignmentLegit(type, tmp.getType()))
                 {
-                    throw new BadVariableDefinition(i);
+                    throw new BadVariableDefinitionException(i);
                 }
                 result.add(new Variable(type, varName, true, isFinal));
                 continue;
             }
             else {
-                if (!VarTypes.isAssignmentLegit(type, argumentType)) {
-                    throw new BadVariableDefinition(i);
+                if (!VarType.isAssignmentLegit(type, argumentType)) {
+                    throw new BadVariableDefinitionException(i);
                 }
                 result.add(new Variable(type, varName, true, isFinal));
                 continue;
@@ -156,7 +156,7 @@ public class LineInterpreter {
         }
 
         String toBeAssignName = assignmentArguments[1];
-        VarTypes toBeAssignType = VarTypes.StringToType(toBeAssignName);
+        VarType toBeAssignType = VarType.StringToType(toBeAssignName);
         if (toBeAssignType == null)
         {
             Variable toBeAssigned = scope.findVariable(toAssignName);
@@ -171,7 +171,7 @@ public class LineInterpreter {
         }
         else
         {
-            if (!VarTypes.isAssignmentLegit(toAssignVar.getType(), toBeAssignType))
+            if (!VarType.isAssignmentLegit(toAssignVar.getType(), toBeAssignType))
             {
                 throw new BadAssignmentException(lineNum);
             }
@@ -204,7 +204,7 @@ public class LineInterpreter {
 
         for (int i = 0; i < methodParams.size(); i++)
         {
-            VarTypes argumentType = VarTypes.StringToType(paramsName.get(i));
+            VarType argumentType = VarType.StringToType(paramsName.get(i));
             if (argumentType == null)
             {
                 Variable var = scope.findVariable(paramsName.get(i));
@@ -216,7 +216,7 @@ public class LineInterpreter {
                 {
                     throw new MethodCallException(lineNum);
                 }
-                if (!VarTypes.isAssignmentLegit(methodParams.get(i).getType(), var.getType()))
+                if (!VarType.isAssignmentLegit(methodParams.get(i).getType(), var.getType()))
                 {
                     throw new MethodCallException(lineNum);
                 }
@@ -224,26 +224,13 @@ public class LineInterpreter {
             }
             else
             {
-                if (!VarTypes.isAssignmentLegit(methodParams.get(i).getType(), argumentType))
+                if (!VarType.isAssignmentLegit(methodParams.get(i).getType(), argumentType))
                 {
                     throw new MethodCallException(lineNum);
                 }
             }
 
         }
-        //TODO
-    }
-
-    /**
-     * Gets a method's name from its call line.
-     * @param line The line to evaluate.
-     * @return The method's name.
-     */
-    public static String getMethodCallName(String line)
-    {
-        line = line.trim();
-        line = line.split("\\(")[0];
-        return line;
     }
 
     /**
@@ -262,6 +249,7 @@ public class LineInterpreter {
 
     /**
      * Create all parameters for a given method.
+     * @param scope The scope the line is defined in.
      * @param condition The condition line.
      * @param lineNum The line number to create variables from.
      * @throws BadIfWhileConditionException If the condition was not in correct format.
@@ -282,8 +270,8 @@ public class LineInterpreter {
             {
                 throw new BadIfWhileConditionException(lineNum);
             }
-            if (!(var.getType() == VarTypes.BOOLEAN || var.getType() == VarTypes.DOUBLE || var.getType() ==
-                    VarTypes.INT))
+            if (!(var.getType() == VarType.BOOLEAN || var.getType() == VarType.DOUBLE || var.getType() ==
+                    VarType.INT))
             {
                 throw new BadIfWhileConditionException(lineNum);
             }

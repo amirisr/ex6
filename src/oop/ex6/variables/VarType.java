@@ -1,6 +1,12 @@
 package oop.ex6.variables;
 
-public enum VarTypes {
+/**
+ * Enum describing every possible variable type in s-java.
+ * @author Amir Israeli
+ * @author Omer Binyamin.
+ */
+public enum VarType
+{
     INT,
     DOUBLE,
     STRING,
@@ -9,7 +15,7 @@ public enum VarTypes {
 
     /**
      * Returns the reserved java word for each type.
-     * @return
+     * @return The reserved java word for each type.
      */
     @Override
     public String toString() {
@@ -30,11 +36,11 @@ public enum VarTypes {
     }
 
     /**
-     *
-     * @param type
-     * @return
+     * Matches a String to a VarType.
+     * @param type The name of the type.
+     * @return The corresponding VarType.
      */
-    public static VarTypes StringToType(String type)
+    public static VarType StringToType(String type)
     {
         switch (type)
         {
@@ -58,7 +64,7 @@ public enum VarTypes {
      * @param newType The type that will give the data.
      * @return true iff the two types are compatibles.
      */
-    public static boolean isAssignmentLegit(VarTypes typeToChange, VarTypes newType)
+    public static boolean isAssignmentLegit(VarType typeToChange, VarType newType)
     {
         switch (typeToChange)
         {

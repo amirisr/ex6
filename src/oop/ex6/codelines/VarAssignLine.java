@@ -66,9 +66,9 @@ public class VarAssignLine {
 	}
 
 	/**
-	 *
-	 * @param line
-	 * @return
+	 * Matches the assignment line to the type the assignment is on.
+	 * @param line The line to interpret.
+	 * @return The type of the assignment.
 	 */
 	 public static String checkAssignment(String line){
 		String type;

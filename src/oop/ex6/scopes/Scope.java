@@ -77,15 +77,15 @@ public abstract class Scope {
      * Adds a variable for this scope.
      * @param variable The variable to add.
      * @param lineNum The line of its declaration.
-     * @throws BadVariableDefinition If this scope already has a variable with this name.
+     * @throws BadVariableDefinitionException If this scope already has a variable with this name.
      */
-    public void addVariable(Variable variable, int lineNum) throws BadVariableDefinition
+    public void addVariable(Variable variable, int lineNum) throws BadVariableDefinitionException
     {
         for (Variable tmp : vars)
         {
             if (variable.getName().equals(tmp.getName()))
             {
-                throw new BadVariableDefinition(lineNum);
+                throw new BadVariableDefinitionException(lineNum);
             }
         }
         vars.add(variable);
@@ -95,10 +95,10 @@ public abstract class Scope {
      * Adds an array list of variables.
      * @param variables ArrayList of variables to add.
      * @param lineNum The line num of their declaration.
-     * @throws BadVariableDefinition If this scope already has a variable with this name.
+     * @throws BadVariableDefinitionException If this scope already has a variable with this name.
      */
     public void addVariablesFromArrayList(ArrayList<Variable> variables, int lineNum) throws
-            BadVariableDefinition
+            BadVariableDefinitionException
     {
         for (Variable variable : variables)
         {

@@ -7,7 +7,7 @@ package oop.ex6.variables;
  */
 public class Variable {
 
-	private VarTypes type;
+	private VarType type;
 	private String name;
 	private boolean isInitialized;
 	private boolean isFinal;
@@ -19,7 +19,7 @@ public class Variable {
 	 * @param isVarInitialized Does the variable has a value.
 	 * @param isVarFinal       Was the variable defined as final.
 	 */
-	public Variable(VarTypes varType, String varName, boolean isVarInitialized, boolean isVarFinal) {
+	public Variable(VarType varType, String varName, boolean isVarInitialized, boolean isVarFinal) {
 		type = varType;
 		name = varName;
 		isInitialized = isVarInitialized;
@@ -46,7 +46,7 @@ public class Variable {
 	 * Returns the variable's type.
 	 * @return The variable's type.
 	 */
-	public VarTypes getType() {
+	public VarType getType() {
 		return type;
 	}
 

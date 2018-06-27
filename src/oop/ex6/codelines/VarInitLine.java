@@ -1,6 +1,6 @@
 package oop.ex6.codelines;
 
-import oop.ex6.scopes.BadVariableDefinition;
+import oop.ex6.scopes.BadVariableDefinitionException;
 import oop.ex6.variables.*;
 
 import java.util.ArrayList;
@@ -21,14 +21,20 @@ public class VarInitLine {
 	private String type;
 	private ArrayList<String> names;
 	private ArrayList<String> values;
-	private static final String isLineRegex = "\\s*(?:final\\s)?\\s*(?:int|double|char|boolean|String)\\s+.*;\\s*";
+	private static final String isLineRegex = "\\s*(?:final\\s)?\\s*(?:int|double|char|boolean|String)\\s+" +
+            ".*;\\s*";
 	public static final String validVarNameRegex = "_\\w+|[a-zA-Z]\\w*";
 
-	private static final String stringRegex = "\\s*(" + validVarNameRegex + ")\\s*(?:=\\s*(\".*\"|" + validVarNameRegex + ")\\s*)?,";
-	private static final String intRegex = "\\s*(" + validVarNameRegex + ")\\s*(?:=\\s*([+-]?\\d+|" + validVarNameRegex + ")\\s*)?,";
-	private static final String doubleRegex = "\\s*(" + validVarNameRegex + ")\\s*(?:=\\s*([+-]?\\d+(?:\\.\\d+)" + "?|" + validVarNameRegex + ")\\s*)?,";
-	private static final String charRegex = "\\s*(" + validVarNameRegex + ")\\s*(?:=\\s*('.'|" + validVarNameRegex + ")\\s*)?,";
-	private static final String booleanRegex = "\\s*(" + validVarNameRegex + ")\\s*(?:=\\s*" + "(true|false|[+-]?\\d+(?:\\.\\d+)?|" + validVarNameRegex + ")\\s*)?,";
+	private static final String stringRegex = "\\s*(" + validVarNameRegex + ")\\s*(?:=\\s*(\".*\"|" +
+            validVarNameRegex + ")\\s*)?,";
+	private static final String intRegex = "\\s*(" + validVarNameRegex + ")\\s*(?:=\\s*([+-]?\\d+|" +
+            validVarNameRegex + ")\\s*)?,";
+	private static final String doubleRegex = "\\s*(" + validVarNameRegex + ")\\s*(?:=\\s*([+-]?\\d+(?:\\" +
+            ".\\d+)" + "?|" + validVarNameRegex + ")\\s*)?,";
+	private static final String charRegex = "\\s*(" + validVarNameRegex + ")\\s*(?:=\\s*('.'|" +
+            validVarNameRegex + ")\\s*)?,";
+	private static final String booleanRegex = "\\s*(" + validVarNameRegex + ")\\s*(?:=\\s*" + "" +
+            "(true|false|[+-]?\\d+(?:\\.\\d+)?|" + validVarNameRegex + ")\\s*)?,";
 
 	static final String FINAL = "final";
 
@@ -45,9 +51,10 @@ public class VarInitLine {
 	 *
 	 * @param line    The line to analyze.
 	 * @param lineNum The line number in its code.
-	 * @throws BadVariableDefinition In case the line is not legit line.
+	 * @throws BadVariableDefinitionException In case the line is not legit line.
 	 */
-	public VarInitLine(String line, int lineNum) throws BadVariableDefinition {
+	public VarInitLine(String line, int lineNum) throws BadVariableDefinitionException
+    {
 		this.line = line;
 		num = lineNum;
 		names = new ArrayList<String>();
@@ -66,7 +73,8 @@ public class VarInitLine {
 		return matcher.matches();
 	}
 
-	private void processLine() throws BadVariableDefinition {
+	private void processLine() throws BadVariableDefinitionException
+    {
 		line = line.trim(); // remove excess spaces
 		line = line.substring(0, line.length() - 1) + ","; // replace the ';' with ','
 		checkFinal();
@@ -82,7 +90,8 @@ public class VarInitLine {
 	public ArrayList<Variable> getVars() {
 		ArrayList<Variable> vars = new ArrayList<>();
 		for (int i = 0; i < names.size(); i++) {
-			vars.add(new Variable(VarTypes.StringToType(type), names.get(i), values.get(i) != null, isFinal));
+			vars.add(new Variable(VarType.StringToType(type), names.get(i), values.get(i) != null,
+                    isFinal));
 		}
 		return vars;
 	}
@@ -109,7 +118,8 @@ public class VarInitLine {
 	/*
 	find and extract all of the vars initiated and their values if assigned
 	 */
-	private void findVarsAndValues() throws BadVariableDefinition {
+	private void findVarsAndValues() throws BadVariableDefinitionException
+    {
 		String regex = "";
 		switch (type) {
 			case INT:
@@ -128,39 +138,54 @@ public class VarInitLine {
 				regex = charRegex;
 				break;
 			default:
-				throw new BadVariableDefinition(num);
+				throw new BadVariableDefinitionException(num);
 		}
 		Matcher matcher = getMatcher(regex, line);
 		int prevEnd = 0;
 		while (matcher.find()) {
 			int a = matcher.start();
 			if (matcher.start() != prevEnd) {
-				throw new BadVariableDefinition(num);
+				throw new BadVariableDefinitionException(num);
 			}
 			names.add(matcher.group(1));
 			values.add(matcher.group(2));
 			if (isFinal && matcher.group(2) == null) {
-				throw new BadVariableDefinition(num);
+				throw new BadVariableDefinitionException(num);
 			}
-			if (matcher.group(2) != null && !type.equals(BOOLEAN) && (matcher.group(2).equals(FALSE) || matcher.group(2).equals(TRUE))) {
-				throw new BadVariableDefinition(num);
+			if (matcher.group(2) != null && !type.equals(BOOLEAN) && (matcher.group(2).equals(FALSE) ||
+                    matcher.group(2).equals(TRUE))) {
+				throw new BadVariableDefinitionException(num);
 			}
 			prevEnd = matcher.end();
 		}
 		if (prevEnd != line.length()) {
-			throw new BadVariableDefinition(num);
+			throw new BadVariableDefinitionException(num);
 		}
 
 	}
 
+    /**
+     * Returns whether the variables declared in this line are final.
+     * @return Whether the variables declared in this line are final.
+     */
 	public boolean isFinal() {
 		return isFinal;
 	}
 
+    /**
+     * Returns the type of variables declared in this line.
+     * @return The type of variables declared in this line.
+     */
 	public String getType() {
 		return type;
 	}
 
+    /**
+     * Returns the values declared in this line.
+     * Can be null (if no value was assigned), a name (in case of a variable), or a type (in case of a
+     * literal value).
+     * @return The values declared in this line.
+     */
 	public ArrayList<String> getValues() {
 		for (int i = 0; i < values.size(); i++) {
 			if (values.get(i) != null) {
@@ -175,6 +200,10 @@ public class VarInitLine {
 		return values;
 	}
 
+	/**
+	 * Returns the names of the variables declared in this line.
+	 * @return The names of the variables declared in this line.
+	 */
 	public ArrayList<String> getNames() {
 		return names;
 	}

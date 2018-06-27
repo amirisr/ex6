@@ -1,0 +1,151 @@
+amir106
+omer.binyamin
+
+
+=============================
+=      File description     =
+=============================
+Package oop:
+    Package ex6:
+        Package codelines:
+            CodeLineTypes.java
+            IfWhileLine.java
+            LineInterpreter.java
+            MethodCallLine.java
+            MethodDefLine.java
+            ReturnLine.java
+            VarAssignLine.java
+            VarInitLine.java
+        Package main:
+            Sjavac.java
+        Package scopes:
+            BadAssignmentException.java
+            BadIfWhileConditionException.java
+            BadMethodDefinitionException.java
+            BadVariableDefinitionException.java
+            CompileException.java
+            GlobalScope.java
+            IfWhileDefinedOutsideScopeException.java
+            MethodCallException.java
+            MethodCallInGlobalScopeException.java
+            MethodDefinedInsideScopeException.java
+            IfWhileScope.java
+            MethodScope.java
+            Scope.java
+            SyntaxException.java
+            NumberOfScopeClosersException.java
+        Package variables:
+            VarTypes.java
+            Variable.java
+
+=============================
+=          Design           =
+=============================
+Each s-java files consists of many scopes, We've coded an abstract Scope class. All scopes have a parent
+scope, its variables, and a start and end line in the s-java file. Other than that we've coded three
+different scopes (that extends the Scope.java class). The first one is GlobalScope - it describes an entire
+s-java file (hence it's its global scope). In addition to holding its variables, it also holds its methods,
+and a String array of the code lines themselves. We should note that probably many people designed this class
+to be singleton. We've decided not to use singleton because this way this program can check multiply files at
+the same run. The second scope is the MethodScope (which also describes method). Again, in addition to
+holding its variables, it also holds its parameters (regular variables only declared in the first line) and
+its name (a simple String type). The father of the method scope is always the global scope that created it,
+and the father of global scopes is always null. Last scope we used is the IfWhileScope. We decided to use
+them as the same scope because other than the reserved word (if or while) there is no difference between the
+two. This scope however doesn't remember any additional data. The main difference between the three is how
+each one implements the testScope() method (which will be discussed in the implementation notes).
+Other than that we have the Variable class. Each object holds its type, name and two booleans saying if that
+
+variable is final or not, and if it was assigned a value or not. For the variable type we used an enum with
+all possible variables type. In addition we declared three static methods in that enum. Two to converting
+between String and VarType, and one for checking if assignment of one type to the other is legit (assigning
+int to a double is legit, but a char to boolean is not).
+
+In addition we had our exception mechanism. Instead of returning true/false in each test-code method, we
+decided to return nothing and assume the input is legal. If the input is not legal we would throw an
+appropriate exception that would bubble to the main method, which will deal with that. In order to achieve
+that, We created the CompileException class, which is a simple Facade for wrapping all our exceptions in this
+exercise - all exceptions extends CompileException, and CompileException extends java's Exception class. We
+created many Exceptions for different occurrences, each with different message. In case the user will want,
+he can simply print the error message and understand the s-java code error (we used it to debug).
+
+For the line parsing we implemented the class LineInterpreter, which knew to recognise the type of the line –
+variable initialization, method call etc, and extract all the important data about it. To do that, the class
+used a few different classes of line processors, each knew to work with a different kind of line. Each had a
+static method used to decide if the line was ment to be that kind of method, even if it is not up to the
+syntax protocol. Afterwards an object of that line processor is made and parses the line, with each level in
+the process building upon the former. Because each line had to be parsed differently and returned different
+details, eventualy the only method that all line processors shared was the one deciding the type of the line,
+but even that one was implemented differently on each class, hence the classes weren't linked or shared a
+common super class, and the line interpreter class knew how to deal with each one in its own way. It is okay
+since adding a new line will require only adding a new class of line processor and a method in the line
+interpreter to handle it.
+
+=============================
+=  Implementation details   =
+=============================
+testScope is an abstract method in the abstract class Scope that all sub-scopes must implements. The main
+idea is simple - Iterate over your lines in the code, analyze each line to a given LineType and act
+accordingly. In addition you need to actually make those lines only if they are under your scope directly -
+not in your decedent scopes. To do so we have a counter that every time a new scope is opened (method scopes
+and if/while in the global and only if/while in methods) increases by one, and every time a scope is closed
+(} line) is reduced by one. Other than that, there are two major differences between each scope's
+implementation. The first one is when to test your decedents scopes. The global scope saves first all its
+method and only in the end after it finished iterating over all lines it tests them. On the other hand, the
+method scopes and the if/while scopes test them right after they finished their lines (they don't even save
+them). Another difference is that when method scope start the test method, it first saves all of its father
+(which is the global) variable. At the end of the run, the method scope sends the variable history back to
+the global which saves it. This is due to the fact that global variables which get assigned during methods
+are only assigned in that method, and outside of it are not assigned (unless of course they were assigned in
+the global scope).
+
+=============================
+=    Answers to questions   =
+=============================
+6.1. We've already stated the s-java code errors mechanism in the design section. We'll address it again:
+Instead of returning true/false in each test-code method, we decided to return nothing and assume the input
+is legal. If the input is not legal we would throw an appropriate exception that would bubble to the main
+method, which will deal with that. In order to achieve that, We created the CompileException class, which is
+a simple Facade for wrapping all our exceptions in this exercise - all exceptions extends CompileException,
+and CompileException extends java's Exception class. We created many Exceptions for different occurrences,
+each with different message. In case the user will want, he can simply print the error message and understand
+the s-java code error (we used it to debug).
+
+6.2.
+As for adding new type of variables, We would simply add them in the VarType enum (along with its
+methods), and add their appropriate regex to the lines interpreter classes.
+
+As for different methods' type, We would first add a VarType member to MethodScope. Beside that we would
+update MethodDefLine that it will start with any variable type or void, and that it will return also the type
+of the method definition. We wouldn't need to update MethodCallLine since it can already return the method's
+name, and each scope has access to all of its global's methods. We would need to update VarAssignLine and
+VarInitLine. In those line there will also be an option of a method call that will need to be handled (in
+addition to other options currently handled). To understand that an assignment is using a method call we will
+simply search for "(" followed by some letters followed by ")". After that we will slice the method call from
+the assignment and send it the MethodCallLine.
+
+As for classes, We would add a new type of scope called ClassScope. Now the hierarchy will be
+global->class->method->if/while's. We would still use one global scope per project. We would concat all the
+lines to a single array and sends that to the global scope. The relations between scope and its father, and
+specifically when to use variable's history and when to test the decedents scope will remain mostly the same.
+Global will test the classes at the end. Class will test the methods at the end. Method will test the
+if/whiles during the iteration. If/while will test the if/whiles during the iteration. As for variable's
+history, Class won't save global's because global variables will no longer bu supported, and method will
+still save its father's variables (which is now class). If/while would still not save its father's variables.
+We did assume that nested classes and nested methods are still not allowed.
+
+6.3. We did not use massive regular expression, but small straight forward expressions, each with a very
+discrete purpose. Hence, we don't have a "main" regex. Never the less, here are two of the expressions we
+used, and maybe the example will also make the way we used them clearer:
+\s*void\s+.*\{\s*
+This is the regex used to determine if the line is a definition of a method. We only checked it starts with
+"void" and ends with "{".
+After the line has passed the first regex, we used this regex here:
+([a-zA-Z]\w*)\s*\(.*\)
+We know there is a "void" in the beginning, so we cut it, then activate the above regex to determine if the
+name of the function is legal and check there are parentheses afterwards. In case the line passed the regex,
+we can also get the name using the group() method.
+
+
+
+

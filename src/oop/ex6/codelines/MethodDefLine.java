@@ -1,12 +1,11 @@
 package oop.ex6.codelines;
 
 import oop.ex6.scopes.BadMethodDefinitionException;
-import oop.ex6.variables.VarTypes;
+import oop.ex6.variables.VarType;
 import oop.ex6.variables.Variable;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * This class describes an analyser for method definition lines.
@@ -20,7 +19,7 @@ public class MethodDefLine{
 	private final static String isLineRegex = "\\s*void\\s+.*\\{\\s*";
 	private final static String checkMethodNameRegex = "([a-zA-Z]\\w*)\\s*\\(.*\\)";
 	private final static String checkParamLineRegex = "(?:\\s*(?:final)?\\s*" +
-            "(?:int|double|char|boolean|String)" + "\\s+" + "(?:" + VarInitLine.validVarNameRegex + ")\\s*,)*";
+			"(?:int|double|char|boolean|String)\\s+(?:" + VarInitLine.validVarNameRegex + ")\\s*,)*";
 	private final static String parseSingleParamRegex = "(int|double|char|boolean|String)\\s+(" + VarInitLine
             .validVarNameRegex + ")"; // use this to extract a parameter's name and type
 	private String methodName;
@@ -122,7 +121,7 @@ public class MethodDefLine{
 	public ArrayList<Variable> getParams(){
 		ArrayList<Variable> params = new ArrayList<>();
 		for(int i = 0; i < paramNames.size(); i++){
-			params.add(new Variable(VarTypes.StringToType(paramTypes.get(i)), paramNames.get(i), true,
+			params.add(new Variable(VarType.StringToType(paramTypes.get(i)), paramNames.get(i), true,
 					paramIsFinal.get(i).equals("1")));
 		}
 		return params;

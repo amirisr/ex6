@@ -1,0 +1,46 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="ex6">
+    <output-path>$PROJECT_DIR$/out/artifacts/ex6</output-path>
+    <root id="archive" name="ex6.jar">
+      <element id="directory" name="oop">
+        <element id="directory" name="ex6">
+          <element id="directory" name="codelines">
+            <element id="file-copy" path="$PROJECT_DIR$/src/oop/ex6/codelines/IfWhileLine.java" />
+            <element id="file-copy" path="$PROJECT_DIR$/src/oop/ex6/codelines/LineInterpreter.java" />
+            <element id="file-copy" path="$PROJECT_DIR$/src/oop/ex6/codelines/CodeLineTypes.java" />
+            <element id="file-copy" path="$PROJECT_DIR$/src/oop/ex6/codelines/MethodCallLine.java" />
+            <element id="file-copy" path="$PROJECT_DIR$/src/oop/ex6/codelines/MethodDefLine.java" />
+            <element id="file-copy" path="$PROJECT_DIR$/src/oop/ex6/codelines/ReturnLine.java" />
+            <element id="file-copy" path="$PROJECT_DIR$/src/oop/ex6/codelines/VarAssignLine.java" />
+            <element id="file-copy" path="$PROJECT_DIR$/src/oop/ex6/codelines/VarInitLine.java" />
+          </element>
+          <element id="directory" name="main">
+            <element id="file-copy" path="$PROJECT_DIR$/src/oop/ex6/main/Sjavac.java" />
+          </element>
+          <element id="directory" name="scopes">
+            <element id="file-copy" path="$PROJECT_DIR$/src/oop/ex6/scopes/BadAssignmentException.java" />
+            <element id="file-copy" path="$PROJECT_DIR$/src/oop/ex6/scopes/BadIfWhileConditionException.java" />
+            <element id="file-copy" path="$PROJECT_DIR$/src/oop/ex6/scopes/BadMethodDefinitionException.java" />
+            <element id="file-copy" path="$PROJECT_DIR$/src/oop/ex6/scopes/BadVariableDefinitionException.java" />
+            <element id="file-copy" path="$PROJECT_DIR$/src/oop/ex6/scopes/CompileException.java" />
+            <element id="file-copy" path="$PROJECT_DIR$/src/oop/ex6/scopes/GlobalScope.java" />
+            <element id="file-copy" path="$PROJECT_DIR$/src/oop/ex6/scopes/IfWhileDefinedOutsideScopeException.java" />
+            <element id="file-copy" path="$PROJECT_DIR$/src/oop/ex6/scopes/IfWhileScope.java" />
+            <element id="file-copy" path="$PROJECT_DIR$/src/oop/ex6/scopes/MethodCallException.java" />
+            <element id="file-copy" path="$PROJECT_DIR$/src/oop/ex6/scopes/MethodCallInGlobalScopeException.java" />
+            <element id="file-copy" path="$PROJECT_DIR$/src/oop/ex6/scopes/MethodDefinedInsideScopeException.java" />
+            <element id="file-copy" path="$PROJECT_DIR$/src/oop/ex6/scopes/MethodScope.java" />
+            <element id="file-copy" path="$PROJECT_DIR$/src/oop/ex6/scopes/NumberOfScopeClosersException.java" />
+            <element id="file-copy" path="$PROJECT_DIR$/src/oop/ex6/scopes/Scope.java" />
+            <element id="file-copy" path="$PROJECT_DIR$/src/oop/ex6/scopes/SyntaxException.java" />
+          </element>
+          <element id="directory" name="variables">
+            <element id="file-copy" path="$PROJECT_DIR$/src/oop/ex6/variables/Variable.java" />
+            <element id="file-copy" path="$PROJECT_DIR$/src/oop/ex6/variables/VarType.java" />
+          </element>
+        </element>
+      </element>
+      <element id="file-copy" path="$PROJECT_DIR$/src/README" />
+    </root>
+  </artifact>
+</component>

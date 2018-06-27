@@ -89,6 +89,10 @@ public class MethodCallLine {
 		return parameters;
 	}
 
+	/**
+	 * Returns the method's name.
+	 * @return The method's name.
+	 */
 	public String getName(){
 		return methodName;
 	}

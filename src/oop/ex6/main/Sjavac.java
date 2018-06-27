@@ -34,9 +34,11 @@ public class Sjavac {
             }
             catch (FileNotFoundException error) {
                 success = false;
+                System.err.println("File not found!");
             }
             catch (IOException exp) {
                 success = false;
+                System.err.println("Couldn't read file!");
             }
             if (success) {
                 GlobalScope global = new GlobalScope(lines);
@@ -45,7 +47,6 @@ public class Sjavac {
                 }
                 catch (CompileException cmp) {
                     success = false;
-                    //System.out.println(cmp.getMessage());
                 }
                 if (success) {
                     System.out.println(0);
@@ -62,6 +63,7 @@ public class Sjavac {
         else
         {
             System.out.println(2);
+            System.err.println("Illegal number of arguments! Should be 1, instead " + args.length);
         }
     }
 }

@@ -7,6 +7,7 @@ package oop.ex6.scopes;
  * @author Omer Binyamin.
  */
 public class CompileException extends Exception {
+    private static final long serialVersionUID = 1L;
 
     /**
      * Simple constructor for the compile exception.

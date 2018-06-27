@@ -23,7 +23,8 @@ public class IfWhileScope extends Scope {
     public IfWhileScope(Scope father, int startLine, int endLine) throws BadIfWhileConditionException
     {
         super(father, startLine, endLine);
-        LineInterpreter.verifyIfWhileCondition(this, getGlobalScope().getCodeLines()[getStart()], getStart());
+        LineInterpreter.verifyIfWhileCondition(this, getGlobalScope().getCodeLines()[getStart()],
+                getStart());
     }
 
     /**
